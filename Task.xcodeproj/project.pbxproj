@@ -8,17 +8,29 @@
 
 /* Begin PBXBuildFile section */
 		171ECA7F2A41140500EF3EFE /* TaskApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171ECA7E2A41140500EF3EFE /* TaskApp.swift */; };
-		171ECA812A41140500EF3EFE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171ECA802A41140500EF3EFE /* ContentView.swift */; };
+		171ECA812A41140500EF3EFE /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171ECA802A41140500EF3EFE /* HomeView.swift */; };
 		171ECA832A41140600EF3EFE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 171ECA822A41140600EF3EFE /* Assets.xcassets */; };
 		171ECA862A41140600EF3EFE /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 171ECA852A41140600EF3EFE /* Preview Assets.xcassets */; };
+		171ECA912A41CD8C00EF3EFE /* TodayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171ECA902A41CD8C00EF3EFE /* TodayView.swift */; };
+		171ECA932A41DAF100EF3EFE /* TodayComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171ECA922A41DAF100EF3EFE /* TodayComponentView.swift */; };
+		171ECA962A41DBA200EF3EFE /* WidgetDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171ECA952A41DBA200EF3EFE /* WidgetDetailView.swift */; };
+		171ECA982A41DCBD00EF3EFE /* ChangeTargetButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171ECA972A41DCBD00EF3EFE /* ChangeTargetButtonView.swift */; };
+		171ECA9A2A41DF5F00EF3EFE /* CounterTargetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171ECA992A41DF5F00EF3EFE /* CounterTargetModel.swift */; };
+		171ECA9C2A41E00D00EF3EFE /* CounterTargetComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171ECA9B2A41E00D00EF3EFE /* CounterTargetComponents.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		171ECA7B2A41140500EF3EFE /* Task.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Task.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		171ECA7E2A41140500EF3EFE /* TaskApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskApp.swift; sourceTree = "<group>"; };
-		171ECA802A41140500EF3EFE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		171ECA802A41140500EF3EFE /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		171ECA822A41140600EF3EFE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		171ECA852A41140600EF3EFE /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		171ECA902A41CD8C00EF3EFE /* TodayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayView.swift; sourceTree = "<group>"; };
+		171ECA922A41DAF100EF3EFE /* TodayComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayComponentView.swift; sourceTree = "<group>"; };
+		171ECA952A41DBA200EF3EFE /* WidgetDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetDetailView.swift; sourceTree = "<group>"; };
+		171ECA972A41DCBD00EF3EFE /* ChangeTargetButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeTargetButtonView.swift; sourceTree = "<group>"; };
+		171ECA992A41DF5F00EF3EFE /* CounterTargetModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CounterTargetModel.swift; sourceTree = "<group>"; };
+		171ECA9B2A41E00D00EF3EFE /* CounterTargetComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CounterTargetComponents.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,12 +63,12 @@
 		171ECA7D2A41140500EF3EFE /* Task */ = {
 			isa = PBXGroup;
 			children = (
+				171ECA942A41DB0400EF3EFE /* Components */,
 				171ECA8F2A41C5C300EF3EFE /* Extensions */,
 				171ECA8E2A41C59100EF3EFE /* Supporting Files */,
 				171ECA8D2A41C57800EF3EFE /* Model */,
 				171ECA8C2A41C56300EF3EFE /* View */,
 				171ECA7E2A41140500EF3EFE /* TaskApp.swift */,
-				171ECA802A41140500EF3EFE /* ContentView.swift */,
 				171ECA842A41140600EF3EFE /* Preview Content */,
 			);
 			path = Task;
@@ -73,6 +85,9 @@
 		171ECA8C2A41C56300EF3EFE /* View */ = {
 			isa = PBXGroup;
 			children = (
+				171ECA902A41CD8C00EF3EFE /* TodayView.swift */,
+				171ECA802A41140500EF3EFE /* HomeView.swift */,
+				171ECA952A41DBA200EF3EFE /* WidgetDetailView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -80,6 +95,7 @@
 		171ECA8D2A41C57800EF3EFE /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				171ECA992A41DF5F00EF3EFE /* CounterTargetModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -97,6 +113,16 @@
 			children = (
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		171ECA942A41DB0400EF3EFE /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				171ECA922A41DAF100EF3EFE /* TodayComponentView.swift */,
+				171ECA972A41DCBD00EF3EFE /* ChangeTargetButtonView.swift */,
+				171ECA9B2A41E00D00EF3EFE /* CounterTargetComponents.swift */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -169,7 +195,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				171ECA812A41140500EF3EFE /* ContentView.swift in Sources */,
+				171ECA812A41140500EF3EFE /* HomeView.swift in Sources */,
+				171ECA912A41CD8C00EF3EFE /* TodayView.swift in Sources */,
+				171ECA9A2A41DF5F00EF3EFE /* CounterTargetModel.swift in Sources */,
+				171ECA932A41DAF100EF3EFE /* TodayComponentView.swift in Sources */,
+				171ECA982A41DCBD00EF3EFE /* ChangeTargetButtonView.swift in Sources */,
+				171ECA9C2A41E00D00EF3EFE /* CounterTargetComponents.swift in Sources */,
+				171ECA962A41DBA200EF3EFE /* WidgetDetailView.swift in Sources */,
 				171ECA7F2A41140500EF3EFE /* TaskApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

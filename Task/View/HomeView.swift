@@ -7,17 +7,23 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct HomeView: View {
+    @State private var isDetailViewActive = false
+    
     var body: some View {
-        VStack {
-            Text("Hello john")
+        NavigationView {
+            VStack {
+
+            }
+            .navigationTitle("Сводка")
         }
-        .padding()
     }
 }
 
+
+
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        HomeView()
     }
 }
