@@ -51,9 +51,12 @@
 		171ECA7D2A41140500EF3EFE /* Task */ = {
 			isa = PBXGroup;
 			children = (
+				171ECA8F2A41C5C300EF3EFE /* Extensions */,
+				171ECA8E2A41C59100EF3EFE /* Supporting Files */,
+				171ECA8D2A41C57800EF3EFE /* Model */,
+				171ECA8C2A41C56300EF3EFE /* View */,
 				171ECA7E2A41140500EF3EFE /* TaskApp.swift */,
 				171ECA802A41140500EF3EFE /* ContentView.swift */,
-				171ECA822A41140600EF3EFE /* Assets.xcassets */,
 				171ECA842A41140600EF3EFE /* Preview Content */,
 			);
 			path = Task;
@@ -65,6 +68,35 @@
 				171ECA852A41140600EF3EFE /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		171ECA8C2A41C56300EF3EFE /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		171ECA8D2A41C57800EF3EFE /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		171ECA8E2A41C59100EF3EFE /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				171ECA822A41140600EF3EFE /* Assets.xcassets */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		171ECA8F2A41C5C300EF3EFE /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
