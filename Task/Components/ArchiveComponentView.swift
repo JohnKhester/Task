@@ -1,30 +1,30 @@
 //
-//  TodayComponentView.swift
+//  ArchiveComponentView.swift
 //  Task
 //
-//  Created by Andrey on 20.06.2023.
+//  Created by Andrey on 21.06.2023.
 //
 
 import SwiftUI
 
-struct TodayComponentView: View {
-    @EnvironmentObject private var taskManager: TaskManagerModel
+struct ArchiveComponentView: View {
+    @ObservedObject var widgetModel = WidgetDataModel()
     var body: some View {
-        VStack {            
+        VStack {
             HStack(alignment: .center, spacing: 8) {
-                Image(systemName: "figure.walk")
+                Image(systemName: "figure.run")
                     .font(.title3)
                     .fontWeight(.medium)
                     .foregroundColor(.white)
                     .frame(width: 44, height: 44)
-                    .background(.teal)
+                    .background(.green)
                     .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
                 
                 VStack(alignment: .leading) {
-                    Text("Задача")
+                    Text("Архив")
                         .font(.body)
                     
-                    Text("Все: \(taskManager.totalTasksCount)")
+                    Text("\(widgetModel.oldTaskValue)")
                         .font(.body)
                         .fontWeight(.semibold)
                         .foregroundColor(Color.blue)
@@ -44,9 +44,8 @@ struct TodayComponentView: View {
     }
 }
 
-struct TodayComponentView_Previews: PreviewProvider {
+struct ArchiveComponentView_Previews: PreviewProvider {
     static var previews: some View {
-        TodayComponentView()
-            .environmentObject(TaskManagerModel())
+        ArchiveComponentView()
     }
 }

@@ -24,10 +24,26 @@ struct ChangeTargetButtonView: View {
                 .padding(.horizontal, 16)
                 .background(Color.gray.opacity(0.2))
                 .cornerRadius(16)
-                 
             })
             .sheet(isPresented: $isChangeTargetActive) {
-                Text("Hello")
+                VStack {
+                    HStack {
+                        Button(action: {
+                            self.isChangeTargetActive.toggle()
+                        }) {
+                            Text("Отменить")
+                        }
+                        Spacer()
+                    }
+                    VStack {
+                        Text("Title")
+                            .font(.title)
+                        Text("Описание")
+                    }.padding(.vertical, 16)
+                    CounterTargetComponents()
+                    
+
+                }
             }
         }
     }

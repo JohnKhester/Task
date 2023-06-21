@@ -8,10 +8,37 @@
 import SwiftUI
 
 struct CounterTargetComponents: View {
-    @ObservedObject var counter = CounterTargetModel()
+    @EnvironmentObject private var taskManager: TaskManagerModel
+    @State private var isEditingTarget = false
+    @State private var hasChangedTarget = false
     var body: some View {
         VStack {
-            Text("Цель: \(counter.valueTarget)")
+            HStack {
+                Button(action: {
+                    self.taskManager.dicrement()
+                    self.hasChangedTarget = true
+                }, label: {
+                    Image(systemName: "minus")
+                }).disabled(taskManager.targetCount == 0)
+                
+                Text("Цель: \(taskManager.targetCount)")
+                
+                Button(action: {
+                    self.taskManager.increment()
+                    self.hasChangedTarget = true
+                }, label: {
+                    Image(systemName: "plus")
+                })
+            }
+            Button(action: {
+                self.isEditingTarget.toggle()
+                if self.isEditingTarget {
+                    self.taskManager.savedTargetCount = self.taskManager.targetCount
+                }
+            }) {
+                    Text("Изменить цель")
+                
+            }.disabled(!hasChangedTarget)
         }
     }
 }
@@ -19,5 +46,6 @@ struct CounterTargetComponents: View {
 struct CounterTargetComponents_Previews: PreviewProvider {
     static var previews: some View {
         CounterTargetComponents()
+            .environmentObject(TaskManagerModel())
     }
 }

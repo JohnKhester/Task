@@ -9,10 +9,12 @@ import SwiftUI
 
 @main
 struct TaskApp: App {
+    @StateObject private var taskManager = TaskManagerModel()
     var body: some Scene {
         WindowGroup {
-            HomeView()
-            
+            Activity()
+                .environmentObject(taskManager)
+              //  .preferredColorScheme(.dark)
         }
     }
 }

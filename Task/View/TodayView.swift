@@ -8,23 +8,29 @@
 import SwiftUI
 
 struct TodayView: View {
-    var body: some View {
-        VStack {
-            Text("Детали")
-                .font(.title)
-                .padding()
-            
-            Button(action: {
-                // Действие при нажатии кнопки "Назад"
-            }) {
-                Image(systemName: "chevron.left")
-                Text("Назад")
-            }
-            .padding()
-        }
-        .navigationTitle("Детали")
-    }
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+
+       var btnBack : some View { Button(action: {
+           self.presentationMode.wrappedValue.dismiss()
+           }) {
+               HStack {
+               Image("ic_back") // set image here
+                   .aspectRatio(contentMode: .fit)
+                   .foregroundColor(.white)
+                   Text("Go back")
+               }
+           }
+       }
+       
+       var body: some View {
+               List {
+                   Text("sample code")
+           }
+           .navigationBarBackButtonHidden(true)
+           .navigationBarItems(leading: btnBack)
+       }
 }
+
 
 struct TodayView_Previews: PreviewProvider {
     static var previews: some View {

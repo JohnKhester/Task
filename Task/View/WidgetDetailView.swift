@@ -10,6 +10,7 @@ import SwiftUI
 struct WidgetDetailView: View {
     var body: some View {
         VStack {
+            Text("Страница подробнее на виджет")
             ChangeTargetButtonView()
         }
     }
