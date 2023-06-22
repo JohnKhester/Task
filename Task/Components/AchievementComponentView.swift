@@ -14,7 +14,7 @@ struct AchievementComponentView: View {
     var body: some View {
         VStack {
             VStack {
-                if taskManager.isAchievementUnlocked(achievement) {
+                if achievement.isUnlocked { // Используйте свойство isUnlocked достижения
                     Image(achievement.image)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
@@ -29,6 +29,7 @@ struct AchievementComponentView: View {
                 Text(achievement.title)
                 Text(achievement.date)
             }
+
         }
         .padding(10)
         .frame(maxWidth: .infinity)

@@ -50,10 +50,10 @@ class TaskManagerModel: ObservableObject {
         "Эксперт4": 9
     ]
     
-    func isAchievementUnlocked(_ achievement: Achievement) -> Bool {
-         let target = achievementTargets[achievement.title] ?? 0
-         return completedTasksCount >= target
-     }
+//    func isAchievementUnlocked(_ achievement: Achievement) -> Bool {
+//         let target = achievementTargets[achievement.title] ?? 0
+//         return completedTasksCount >= target
+//     }
 
     var totalTasksCount: Int {
         tasks.count
@@ -89,32 +89,40 @@ class TaskManagerModel: ObservableObject {
 
     
     func toggleTaskDone(_ task: Task) {
-          for (index, currentTask) in tasks.enumerated() {
-              if currentTask.id == task.id {
-                  tasks[index].isDone.toggle()
-                  
-                  let completedCount = completedTasksCount
-                  let target = targetCount
-                  
-                  if completedCount == target {
-                      // Проверяем, есть ли разблокированные достижения
-                      let unlockedAchievements = achievements.filter { achievement in
-                          let isUnlocked = achievementStatus[achievement.id] ?? false
-                          let achievementTarget = achievementTargets[achievement.title] ?? 0
-                          return !isUnlocked && achievementTarget == target
-                      }
-                      
-                      // Разблокируем достижия, соответствующие установленной цели
-                      for unlockedAchievement in unlockedAchievements {
-                          achievementStatus[unlockedAchievement.id] = true
-                          print("Achievement unlocked: \(unlockedAchievement.title)")
-                      }
-                  }
-                  
-                  break
-              }
-          }
-      }
+        for (index, currentTask) in tasks.enumerated() {
+            if currentTask.id == task.id {
+                tasks[index].isDone.toggle()
+                
+                let completedCount = completedTasksCount
+                let target = targetCount
+                
+                if completedCount == target {
+                    // Проверяем, есть ли разблокированные достижения
+                    let unlockedAchievements = achievements.filter { achievement in
+                        let isUnlocked = achievementStatus[achievement.id] ?? false
+                        let achievementTarget = achievementTargets[achievement.title] ?? 0
+                        return !isUnlocked && achievementTarget == target
+                    }
+                    
+                    // Разблокируем достижия, соответствующие установленной цели
+                    for unlockedAchievement in unlockedAchievements {
+                        achievementStatus[unlockedAchievement.id] = true
+                        print("Achievement unlocked: \(unlockedAchievement.title)")
+                    }
+                }
+                
+                break
+            }
+        }
+        // После завершения цикла обновляем isUnlocked в объектах достижений
+        for (index, achievement) in achievements.enumerated() {
+            let target = achievementTargets[achievement.title] ?? 0
+            let isUnlocked = completedTasksCount >= target
+            achievements[index].isUnlocked = isUnlocked
+        }
+    }
+
+
 
 
     // Логика изменение цели
