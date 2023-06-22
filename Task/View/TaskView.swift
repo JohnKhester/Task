@@ -14,52 +14,54 @@ struct TaskView: View {
     @State private var isEditing = false
     
     var body: some View {
-        VStack(spacing: 6) {
-            HStack {
-                TextField("Название", text: $newTaskTitle)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                
-                Button(action: {
-                    taskManager.addTask(title: newTaskTitle)
-                    newTaskTitle = ""
-                }) {
-                    Text("Добавить")
+        ScrollView {
+            VStack(spacing: 6) {
+                HStack {
+                    TextField("Название", text: $newTaskTitle)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                    
+                    Button(action: {
+                        taskManager.addTask(title: newTaskTitle)
+                        newTaskTitle = ""
+                    }) {
+                        Text("Добавить")
+                    }
+                    .disabled(newTaskTitle.isEmpty)
                 }
-                .disabled(newTaskTitle.isEmpty)
-            }
-            .padding()
-            
-            Text("Все: \(taskManager.totalTasksCount)")
-            Text("Завершено: \(taskManager.completedTasksCount)")
-            
-            ForEach(taskManager.tasks) { task in
-                VStack {
-                    HStack {
-                        Text(task.title)
-                            .strikethrough(task.isDone)
-                        
-                        Spacer()
-                        if isEditing {
+                .padding()
+                
+                Text("Все: \(taskManager.totalTasksCount)")
+                Text("Завершено: \(taskManager.completedTasksCount)")
+                
+                ForEach(taskManager.tasks) { task in
+                    VStack {
+                        HStack {
+                            Text(task.title)
+                                .strikethrough(task.isDone)
+                            
+                            Spacer()
+                            if isEditing {
+                                Button(action: {
+                                    taskManager.deleteTask(task)
+                                }) {
+                                    Image(systemName: "trash")
+                                        .foregroundColor(.red)
+                                }
+                                .buttonStyle(BorderlessButtonStyle())
+                            }
+                            
                             Button(action: {
-                                taskManager.deleteTask(task)
+                                taskManager.toggleTaskDone(task)
                             }) {
-                                Image(systemName: "trash")
-                                    .foregroundColor(.red)
+                                Image(systemName: task.isDone ? "circle" : "circle.fill")
                             }
                             .buttonStyle(BorderlessButtonStyle())
                         }
-                        
-                        Button(action: {
-                            taskManager.toggleTaskDone(task)
-                        }) {
-                            Image(systemName: task.isDone ? "circle" : "circle.fill")
-                        }
-                        .buttonStyle(BorderlessButtonStyle())
                     }
+                    .padding()
+                    .background(Color.yellow)
+                    .cornerRadius(10)
                 }
-                .padding()
-                .background(Color.yellow)
-                .cornerRadius(10)
             }
         }
         .toolbar {

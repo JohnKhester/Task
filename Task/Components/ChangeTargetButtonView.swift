@@ -40,9 +40,7 @@ struct ChangeTargetButtonView: View {
                             .font(.title)
                         Text("Описание")
                     }.padding(.vertical, 16)
-                    CounterTargetComponents()
-                    
-
+                    CounterTargetComponents(isChangeTargetActive: $isChangeTargetActive)
                 }
             }
         }
@@ -52,5 +50,6 @@ struct ChangeTargetButtonView: View {
 struct ChangeTargetButtonView_Previews: PreviewProvider {
     static var previews: some View {
         ChangeTargetButtonView()
+            .environmentObject(TaskManagerModel())
     }
 }

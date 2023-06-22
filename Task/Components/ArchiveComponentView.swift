@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ArchiveComponentView: View {
-    @ObservedObject var widgetModel = WidgetDataModel()
+   // @ObservedObject var widgetModel = WidgetDataModel()
     var body: some View {
         VStack {
             HStack(alignment: .center, spacing: 8) {
@@ -24,7 +24,7 @@ struct ArchiveComponentView: View {
                     Text("Архив")
                         .font(.body)
                     
-                    Text("\(widgetModel.oldTaskValue)")
+                    Text("jjojo")
                         .font(.body)
                         .fontWeight(.semibold)
                         .foregroundColor(Color.blue)

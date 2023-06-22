@@ -8,9 +8,9 @@
 import Foundation
 import Combine
 
-class WidgetDataModel: ObservableObject {
-    @Published var title: String = "Задачи"
-    @Published var taget: String = "Цель"
-    @Published var taskTodayValue: Int = 0
-    @Published var oldTaskValue: Int = 5
-}
+//class WidgetDataModel: ObservableObject {
+//    @Published var title: String = "Задачи"
+//    @Published var taget: String = "Цель"
+//    @Published var taskTodayValue: Int = 0
+//    @Published var oldTaskValue: Int = 5
+//}

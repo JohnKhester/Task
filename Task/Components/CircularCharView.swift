@@ -24,12 +24,12 @@ struct CircularCharView: View {
                     .rotationEffect(.degrees(-90))
 
                 Text(String(format: "%.0f%%", progress * 100))
-                    .font(.title)
+                    .font(.headline)
                     .fontWeight(.bold)
             }
         }
     }
- 
+
 }
 
 struct CircularCharView_Previews: PreviewProvider {

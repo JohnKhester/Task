@@ -11,6 +11,7 @@ struct CounterTargetComponents: View {
     @EnvironmentObject private var taskManager: TaskManagerModel
     @State private var isEditingTarget = false
     @State private var hasChangedTarget = false
+    @Binding var isChangeTargetActive: Bool  // Добавляем привязку состояния
     var body: some View {
         VStack {
             HStack {
@@ -30,11 +31,12 @@ struct CounterTargetComponents: View {
                     Image(systemName: "plus")
                 })
             }
-            Button(action: {
+            Button(action: {                
                 self.isEditingTarget.toggle()
                 if self.isEditingTarget {
                     self.taskManager.savedTargetCount = self.taskManager.targetCount
                 }
+                self.isChangeTargetActive = false
             }) {
                     Text("Изменить цель")
                 
@@ -45,7 +47,7 @@ struct CounterTargetComponents: View {
 
 struct CounterTargetComponents_Previews: PreviewProvider {
     static var previews: some View {
-        CounterTargetComponents()
+        CounterTargetComponents(isChangeTargetActive: .constant(false))
             .environmentObject(TaskManagerModel())
     }
 }

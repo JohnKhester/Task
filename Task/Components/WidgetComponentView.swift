@@ -22,9 +22,11 @@ struct WidgetComponentView: View {
                 Text("\(taskManager.savedTargetCount)")
             }
             Spacer()
-            CircularCharView(progress: progress)
+            CircularCharView(progress: taskManager.completionPercentage)
+                .frame(height: 100)
                 .frame(width: 70, height: 70)
                 .padding()
+                .animation(.linear(duration: 1.0), value: UUID())
         }
         .frame(maxWidth: .infinity)
         .padding(.horizontal, 16)

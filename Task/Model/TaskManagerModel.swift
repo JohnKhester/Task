@@ -20,6 +20,7 @@ struct Achievement: Identifiable {
     let title: String
     let date: String
     let image: String
+    var isUnlocked: Bool = false
 }
 
 class TaskManagerModel: ObservableObject {
@@ -33,29 +34,37 @@ class TaskManagerModel: ObservableObject {
         Achievement(title: "Эксперт", date: "3/08/2023", image: "3"),
         Achievement(title: "Эксперт2", date: "3/08/2023", image: "3"),
         Achievement(title: "Эксперт3", date: "3/08/2023", image: "2"),
-        Achievement(title: "Эксперт4", date: "3/08/2023", image: "1"),        
+        Achievement(title: "Эксперт4", date: "3/08/2023", image: "1"),
+        Achievement(title: "Default", date: "", image: "default")
+    ]
+    // Добавляем словарь для хранения статуса разблокировки каждого достижения
+    @Published var achievementStatus: [UUID: Bool] = [:]
+    
+    private var achievementTargets: [String: Int] = [
+        "Default": 0,
+        "Новичок": 3,
+        "Продвинутый": 5, // Замените значение на 5
+        "Эксперт": 6,
+        "Эксперт2": 7,
+        "Эксперт3": 8,
+        "Эксперт4": 9
     ]
     
+    func isAchievementUnlocked(_ achievement: Achievement) -> Bool {
+         let target = achievementTargets[achievement.title] ?? 0
+         return completedTasksCount >= target
+     }
+
     var totalTasksCount: Int {
         tasks.count
     }
-    
-//    var completedTasksCount: Int {
-//        tasks.filter { $0.isDone }.count
-//    }
-
     var completedTasksCount: Int {
-        // Шаг 1: Создаем счетчик выполненных задач
         var count = 0
-        // Шаг 2: Проходим по каждой задаче в массиве tasks
         for task in tasks {
-            // Шаг 3: Проверяем свойство isDone каждой задачи
             if task.isDone {
-                // Шаг 4: Если задача выполнена, увеличиваем счетчик на 1
                 count += 1
             }
         }
-        // Шаг 5: Возвращаем итоговое количество выполненных задач
         return count
     }
 
@@ -67,28 +76,47 @@ class TaskManagerModel: ObservableObject {
     
     func deleteTask(_ task: Task) {
         var indexToRemove: Int?
-        // Шаг 1: Ищем индекс задачи в массиве tasks
         for (index, existingTask) in tasks.enumerated() {
             if existingTask.id == task.id {
                 indexToRemove = index
                 break
             }
         }
-        // Шаг 2: Если задача найдена, удаляем ее из массива tasks
         if let index = indexToRemove {
             tasks.remove(at: index)
         }
     }
 
-    func toggleTaskDone(_ task: Task) {
-        for (index, currentTask) in tasks.enumerated() {
-            if currentTask.id == task.id {
-                tasks[index].isDone.toggle()
-                break
-            }
-        }
-    }
     
+    func toggleTaskDone(_ task: Task) {
+          for (index, currentTask) in tasks.enumerated() {
+              if currentTask.id == task.id {
+                  tasks[index].isDone.toggle()
+                  
+                  let completedCount = completedTasksCount
+                  let target = targetCount
+                  
+                  if completedCount == target {
+                      // Проверяем, есть ли разблокированные достижения
+                      let unlockedAchievements = achievements.filter { achievement in
+                          let isUnlocked = achievementStatus[achievement.id] ?? false
+                          let achievementTarget = achievementTargets[achievement.title] ?? 0
+                          return !isUnlocked && achievementTarget == target
+                      }
+                      
+                      // Разблокируем достижия, соответствующие установленной цели
+                      for unlockedAchievement in unlockedAchievements {
+                          achievementStatus[unlockedAchievement.id] = true
+                          print("Achievement unlocked: \(unlockedAchievement.title)")
+                      }
+                  }
+                  
+                  break
+              }
+          }
+      }
+
+
     // Логика изменение цели
     func increment() {
         targetCount += 1
@@ -96,6 +124,17 @@ class TaskManagerModel: ObservableObject {
     
     func dicrement() {
         targetCount -= 1
+    }
+
+    var completionPercentage: Double {
+        let completedCount = Double(completedTasksCount)
+        let target = Double(targetCount)
+        
+        if target == 0 {
+            return 0.0
+        } else {
+            return completedCount / target
+        }
     }
 
 }
