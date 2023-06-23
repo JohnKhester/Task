@@ -16,18 +16,18 @@ struct AchievementComponentView: View {
             VStack {
                 // Используйте свойство isUnlocked достижения
                 if achievement.isUnlocked {
-                    Image(achievement.image)
+                    Image(achievement.colorImage)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 90, height: 90)
                 } else {
-                    Image("default")
+                    Image(achievement.image)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 90, height: 90)
                 }
                 Text(achievement.title)
-                    .mediumFont_14()
+                    .mediumFont_12()
                     .foregroundColor(Color.white)
                 //Text(achievement.date)
             }
@@ -35,10 +35,6 @@ struct AchievementComponentView: View {
         .padding(10)
         .frame(maxWidth: .infinity)
         .frame(height: 120)
-//        .background {
-//            RoundedRectangle(cornerRadius: 18, style: .continuous)
-//                .fill(.gray).opacity(0.9)
-//        }
         .id(achievement.id)
         // Добавляем идентификатор для обновления представления
     }
@@ -46,10 +42,17 @@ struct AchievementComponentView: View {
 
 struct AchievementComponentView_Previews: PreviewProvider {
     static var previews: some View {
-        let achievement = Achievement(title: "Новичок", date: "1/08/2023", image: "1")
+        let achievement = Achievement(
+            title: "Новичок",
+            date: "1/08/2023",
+            image: "1",
+            colorImage: "colorful_1",
+            description: "Заработайте первые 10 AchievoPoints",
+            isLockedDescription:"Закройте свои первые 10 задач и начни свой путь к достижению целей.",
+            isUnLockedDecription: "Вы закрыли свои первые 10 задач и начали свой путь к достижению целей. Поздравляем с первым шагом!")
         AchievementComponentView(achievement: achievement)
            .environmentObject(TaskManagerModel())
     }
 }
 
-
+ 

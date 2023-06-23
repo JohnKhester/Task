@@ -20,6 +20,10 @@ struct Achievement: Identifiable {
     let title: String
     let date: String
     let image: String
+    let colorImage: String
+    let description: String
+    let isLockedDescription: String
+    let isUnLockedDecription: String
     var isUnlocked: Bool = false
 }
 
@@ -36,15 +40,65 @@ class TaskManagerModel: ObservableObject {
     @Published var titleTarget: String = "Цель"
     @Published var targetCount: Int = 3 // Цель пользователя
     @Published var savedTargetCount: Int = 3
+
     @Published var achievements: [Achievement] = [
-        Achievement(title: "Новичок", date: "1/08/2023", image: "1"),
-        Achievement(title: "Продвинутый", date: "2/08/2023", image: "2"),
-        Achievement(title: "Эксперт", date: "3/08/2023", image: "3"),
-        Achievement(title: "Эксперт2", date: "3/08/2023", image: "4"),
-        Achievement(title: "Эксперт3", date: "3/08/2023", image: "5"),
-        Achievement(title: "Эксперт4", date: "3/08/2023", image: "6"),
-        Achievement(title: "Default", date: "", image: "default")
+        Achievement(
+            title: "Новичок",
+            date: "1/08/2023",
+            image: "1",
+            colorImage: "colorful_1",
+            description: "Заработайте первые 10 AchievoPoints",
+            isLockedDescription:"Закройте свои первые 10 задач и начни свой путь к достижению целей.",
+            isUnLockedDecription: "Вы закрыли свои первые 10 задач и начали свой путь к достижению целей. Поздравляем с первым шагом!"),
+        
+        Achievement(
+            title: "Активный",
+            date: "2/08/2023",
+            image: "2",
+            colorImage: "colorful_2",
+            description: "Заработайте 25 AchievoPoints",
+            isLockedDescription: "Закройте 25 задач и продолжаете двигаться вперед.",
+            isUnLockedDecription: "Вы закрыли 25 задач и продолжаете двигаться вперед."),
+        
+        Achievement(
+            title: "Скаут",
+            date: "3/08/2023",
+            image: "3",
+            colorImage: "colorful_3",
+            description: "Заработайте 70 AchievoPoints",
+            isLockedDescription: "Закройте 70 задач и стремитесь к достижению ваших целей.",
+            isUnLockedDecription: "Вы закрыли 70 задач, что свидетельствует о вашей настойчивости и постоянном стремлении целей."),
+        
+        Achievement(
+            title: "Искатель",
+            date: "3/08/2023",
+            image: "4",
+            colorImage: "colorful_4",
+            description: "Заработайте 100 AchievoPoints",
+            isLockedDescription: "Закройте 100 задач и продолжаете уверенно двигаться к своим целям.",
+            isUnLockedDecription: "Вы закрыли 100 задач и продолжаете уверенно двигаться к своим целям. Ваше упорство и преданность достойны восхищения!"),
+        
+        Achievement(
+            title: "Обитель",
+            date: "3/08/2023",
+            image: "5",
+            colorImage: "colorful_5",
+            description: "Заработайте 125 AchievoPoints",
+            isLockedDescription: "Закройте 120 задач и продолжаете покорять новые вершины",
+            isUnLockedDecription: "Вы закрыли 125 задач и продолжаете покорять новые вершины. Ваше настойчивое усилие и самодисциплина впечатляют!"),
+        
+        Achievement(
+            title: "Джедай",
+            date: "3/08/2023",
+            image: "6",
+            colorImage: "colorful_6",
+            description: "Заработайте 150 AchievoPoints",
+            isLockedDescription: "Закройте 150 задач и продолжаете уверенно двигаться к своим целям.",
+            isUnLockedDecription: "Вы закрыли 150 задач. Ваша регулярность и сила воли являются примером для других пользователей AchievoTasks."),
+        //Achievement(title: "Default", date: "", image: "default", colorImage: "colorful_default")
     ]
+
+    
     // Добавляем словарь для хранения статуса разблокировки каждого достижения
     @Published var achievementStatus: [UUID: Bool] = [:]
     
@@ -83,11 +137,11 @@ class TaskManagerModel: ObservableObject {
     private var achievementTargets: [String: Int] = [
         "Default": 0,
         "Новичок": 3,
-        "Продвинутый": 5, // Замените значение на 5
-        "Эксперт": 6,
-        "Эксперт2": 7,
-        "Эксперт3": 8,
-        "Эксперт4": 9
+        "Активный": 5,
+        "Скаут": 6,
+        "Искатель": 7,
+        "Обитель": 8,
+        "Джедай": 9
     ]
     
     var totalTasksCount: Int {

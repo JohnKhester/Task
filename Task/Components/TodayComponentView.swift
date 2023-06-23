@@ -16,8 +16,15 @@ struct TodayComponentView: View {
                     .mediumFont_18()
                     .foregroundColor(.white)
                     .frame(width: 44, height: 44)
-                    .background(.orange)
-                    .clipShape(RoundedRectangle(cornerRadius: 9, style: .continuous))
+                    .background(
+                        LinearGradient(
+                            gradient: Gradient(colors: [Color(red: Double(0xDB)/255.0, green: Double(0x17)/255.0, blue: Double(0x26)/255.0), Color(red: Double(0xBD)/255.0, green: Double(0x17)/255.0, blue: Double(0x81)/255.0)]),
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                    )
+                    .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+
                 
                 VStack(alignment: .leading) {
                     Text("Задача")
@@ -30,7 +37,8 @@ struct TodayComponentView: View {
                 }
                 Spacer()
                 Image(systemName: "chevron.right")
-                    .foregroundColor(Color.orange)
+                    .foregroundColor(Color.white)
+                    .opacity(0.5)
             }
             .padding(12)
             .frame(maxWidth: .infinity)

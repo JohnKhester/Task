@@ -23,7 +23,7 @@ struct CircularCharView: View {
             Circle()
                 .trim(from: 0, to: progress)
                 .stroke(style: StrokeStyle(lineWidth: 16, lineCap: .round, lineJoin: .round))
-                .fill(gradient) // Apply gradient-like effect
+                .fill(gradient)
                 .rotationEffect(.degrees(-90))
         }
     }
@@ -32,7 +32,7 @@ struct CircularCharView: View {
 
 struct CircularCharView_Previews: PreviewProvider {
     static var previews: some View {
-        CircularCharView(progress: 0.7, startColor: .blue, endColor: .teal)
+        CircularCharView(progress: 0.7, startColor: .blueColor, endColor: .green)
             .frame(width: 200, height: 200)
     }
 }

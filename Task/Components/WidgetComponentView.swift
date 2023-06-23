@@ -17,7 +17,7 @@ struct WidgetComponentView: View {
             VStack(alignment: .leading) {
                 HStack {
                     RoundedRectangle(cornerRadius: 2)
-                        .fill(.red)
+                        .fill(Color.greenColor)
                         .frame(width: 8, height: 8)
                     Text("Задачи")
                         .font(Font.system(size: 14))
@@ -31,7 +31,7 @@ struct WidgetComponentView: View {
             VStack(alignment: .leading) {
                 HStack {
                     RoundedRectangle(cornerRadius: 2)
-                        .fill(.teal)
+                        .fill(Color.blueColor)
                         .frame(width: 8, height: 8)
                     Text(taskManager.titleTarget)
                         .font(Font.system(size: 14))
@@ -46,7 +46,7 @@ struct WidgetComponentView: View {
                 Text(String(format: "%.0f%%", progress * 100))
                     .boldFont_16()
                     .foregroundColor(Color.white)
-                CircularCharView(progress: progress,  startColor: .blue, endColor: .teal)
+                CircularCharView(progress: progress,  startColor: .blueColor, endColor: .greenColor)
                     .frame(width: 80, height: 80)
                     .animation(.easeInOut(duration: 1), value: UUID())
                     .onAppear {

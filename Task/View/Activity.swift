@@ -28,7 +28,7 @@ struct Activity: View {
                         Label("Настройки", systemImage: "gearshape")
                     }.tag(2)
             }
-            .tint(Color.teal)
+            .tint(Color.greenColor)
             
         }
         .environmentObject(TaskManagerModel())

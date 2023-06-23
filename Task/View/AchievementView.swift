@@ -14,17 +14,34 @@ struct AchievementView: View {
     var threeColumnGrid = [GridItem(.flexible(), spacing: 6), GridItem(.flexible(), spacing: 6), GridItem(.flexible(), spacing: 6)]
     
     var body: some View {
-        ScrollView {
-            LazyVGrid(columns: threeColumnGrid, spacing: 6) {
-                ForEach(taskManager.achievements) { achievement in
-                    AchievementComponentView(achievement: achievement)
-                        .onTapGesture {
-                            selectedAchievement = achievement
-                            isPopupVisible = true
+        ZStack {
+            Color.background.edgesIgnoringSafeArea(.all)
+            ScrollView {
+                VStack {
+                    HStack {
+                        Text("Награды")
+                            .boldFont_32()
+                            .foregroundColor(.white)
+                        Spacer()
+                    }.padding(.leading, 16)
+                        .foregroundColor(.white.opacity(0.5))
+                    LazyVGrid(columns: threeColumnGrid, spacing: 6) {
+                        ForEach(taskManager.achievements) { achievement in
+                            AchievementComponentView(achievement: achievement)
+                                .onTapGesture {
+                                    selectedAchievement = achievement
+                                    isPopupVisible = true
+                                }
                         }
+                    }
                 }
             }
         }
+//        .navigationBarTitle("Награды")
+//        .toolbarColorScheme(.dark, for: .navigationBar)
+//        .toolbarBackground(Color.background, for: .navigationBar)
+//        .toolbarBackground(.visible, for: .navigationBar)
+//        .background(Color.background)
         .overlay(
             popupView
                 .opacity(isPopupVisible ? 1 : 0)

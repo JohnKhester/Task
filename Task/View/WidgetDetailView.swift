@@ -8,8 +8,11 @@
 import SwiftUI
 
 struct WidgetDetailView: View {
+    @EnvironmentObject private var taskManager: TaskManagerModel
     var body: some View {
         VStack {
+            Text("Все: \(taskManager.totalTasksCount)")
+            Text("Завершено: \(taskManager.completedTasksCount)")
             Text("Страница подробнее на виджет")
             ChangeTargetButtonView()
         }

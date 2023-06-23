@@ -13,6 +13,7 @@ struct TaskApp: App {
     var body: some Scene {
         WindowGroup {
             Activity()
+                .preferredColorScheme(.dark)
                 .environmentObject(taskManager)
               //  .preferredColorScheme(.dark)
         }
