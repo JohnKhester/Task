@@ -19,5 +19,6 @@ struct WidgetDetailView: View {
 struct WidgetDetailView_Previews: PreviewProvider {
     static var previews: some View {
         WidgetDetailView()
+            .environmentObject(TaskManagerModel())
     }
 }

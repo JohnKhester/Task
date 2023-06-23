@@ -10,37 +10,35 @@ import SwiftUI
 struct TodayComponentView: View {
     @EnvironmentObject private var taskManager: TaskManagerModel
     var body: some View {
-        VStack {            
-            HStack(alignment: .center, spacing: 8) {
-                Image(systemName: "figure.walk")
-                    .font(.title3)
-                    .fontWeight(.medium)
+        VStack {
+            HStack(alignment: .center, spacing: 12) {
+                Image(systemName: "list.clipboard.fill")
+                    .mediumFont_18()
                     .foregroundColor(.white)
                     .frame(width: 44, height: 44)
-                    .background(.teal)
-                    .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                    .background(.orange)
+                    .clipShape(RoundedRectangle(cornerRadius: 9, style: .continuous))
                 
                 VStack(alignment: .leading) {
                     Text("Задача")
-                        .font(.body)
+                        .font(.system(size: 14, weight: .medium))
+                        .whiteForegroundWithOpacity()
                     
-                    Text("Все: \(taskManager.totalTasksCount)")
-                        .font(.body)
-                        .fontWeight(.semibold)
-                        .foregroundColor(Color.blue)
+                    Text("\(taskManager.totalTasksCount)")
+                        .boldFont_24()
+                        .foregroundColor(Color.white)
                 }
                 Spacer()
                 Image(systemName: "chevron.right")
-                    .foregroundColor(.black)
+                    .foregroundColor(Color.orange)
             }
-            .padding(10)
+            .padding(12)
             .frame(maxWidth: .infinity)
             .background {
                 RoundedRectangle(cornerRadius: 18, style: .continuous)
-                    .fill(.ultraThinMaterial).opacity(0.5)
+                    .fill(.white).opacity(0.07)
             }
-        }
-        
+        }.padding(.horizontal, 16)
     }
 }
 

@@ -14,7 +14,8 @@ struct AchievementComponentView: View {
     var body: some View {
         VStack {
             VStack {
-                if achievement.isUnlocked { // Используйте свойство isUnlocked достижения
+                // Используйте свойство isUnlocked достижения
+                if achievement.isUnlocked {
                     Image(achievement.image)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
@@ -25,19 +26,21 @@ struct AchievementComponentView: View {
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 90, height: 90)
                 }
-
                 Text(achievement.title)
-                Text(achievement.date)
+                    .mediumFont_14()
+                    .foregroundColor(Color.white)
+                //Text(achievement.date)
             }
-
         }
         .padding(10)
         .frame(maxWidth: .infinity)
-        .background {
-            RoundedRectangle(cornerRadius: 18, style: .continuous)
-                .fill(.gray).opacity(0.9)
-        }
-        .id(achievement.id) // Добавляем идентификатор для обновления представления
+        .frame(height: 120)
+//        .background {
+//            RoundedRectangle(cornerRadius: 18, style: .continuous)
+//                .fill(.gray).opacity(0.9)
+//        }
+        .id(achievement.id)
+        // Добавляем идентификатор для обновления представления
     }
 }
 

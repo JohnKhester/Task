@@ -8,32 +8,31 @@
 import SwiftUI
 
 struct CircularCharView: View {
-    var progress: CGFloat // Пример значений для диаграммы
+    var progress: CGFloat
+    var startColor: Color
+    var endColor: Color
+    
     var body: some View {
+        let gradient = AngularGradient(gradient: Gradient(colors: [startColor, endColor]), center: .center, startAngle: Angle(degrees: 0), endAngle: Angle(degrees: 360 * progress))
         ZStack {
-            ZStack {
-                Circle()
-                    .stroke(lineWidth: 20)
-                    .opacity(0.3)
-                    .foregroundColor(.gray)                   
-
-                Circle()
-                    .trim(from: 0, to: progress)
-                    .stroke(style: StrokeStyle(lineWidth: 20, lineCap: .round, lineJoin: .round))
-                    .foregroundColor(.blue)
-                    .rotationEffect(.degrees(-90))
-
-                Text(String(format: "%.0f%%", progress * 100))
-                    .font(.headline)
-                    .fontWeight(.bold)
-            }
+            Circle()
+                .stroke(lineWidth: 16)
+                .opacity(0.3)
+                .foregroundColor(.gray) 
+            
+            Circle()
+                .trim(from: 0, to: progress)
+                .stroke(style: StrokeStyle(lineWidth: 16, lineCap: .round, lineJoin: .round))
+                .fill(gradient) // Apply gradient-like effect
+                .rotationEffect(.degrees(-90))
         }
     }
-
 }
+
 
 struct CircularCharView_Previews: PreviewProvider {
     static var previews: some View {
-        CircularCharView(progress: 0.7)
+        CircularCharView(progress: 0.7, startColor: .blue, endColor: .teal)
+            .frame(width: 200, height: 200)
     }
 }

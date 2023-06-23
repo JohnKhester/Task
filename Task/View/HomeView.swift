@@ -7,14 +7,13 @@
 
 import SwiftUI
 
+
+
 struct HomeView: View {
-    // @State private var isDetailViewActive = false
     @EnvironmentObject private var taskManager: TaskManagerModel
     @State private var isPopupVisible = false
     @State private var selectedAchievement: Achievement?
-    
-    
-    var twoColumnGrid = [GridItem(.flexible(), spacing: 6), GridItem(.flexible(), spacing: 6)]
+    @State private var isHeaderTransparent = true
     var threeColumnGrid = [GridItem(.flexible(), spacing: 6), GridItem(.flexible(), spacing: 6), GridItem(.flexible(), spacing: 6)]
     var body: some View {
         NavigationStack {
@@ -22,46 +21,38 @@ struct HomeView: View {
                 NavigationLink {
                     WidgetDetailView()
                 } label: {
-                    WidgetComponentView()
+                    VStack(alignment: .leading) {
+                        Text(taskManager.currentDateWithDayFormatted())
+                            .font(Font.system(size: 16))
+                            .fontWeight(.medium)
+                            .foregroundColor(Color.white)
+                            .opacity(0.5)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.top, 12)
+                        WidgetComponentView()
+                    }.padding(.horizontal, 16)
                 }
-                VStack(spacing: 6.0) {
+                VStack {
                     HStack {
                         Text("Сегодня")
-                            .font(.title2)
-                            .fontWeight(.medium)
-                            .foregroundColor(Color.blue)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(.leading, 4)
-                        
+                            .boldFont_18()
+                            .foregroundColor(Color.white)
+                            .padding(.top, 8)
                         Spacer()
-//                        
-//                        Text("Show More")
-//                            .font(.callout)
-//                            .fontWeight(.regular)
-//                            .foregroundColor(Color.blue)
                     }
-                }
-                LazyVGrid(columns: twoColumnGrid, spacing: 6) {
-                    NavigationLink {
-                        TaskView()
-                    } label: {
-                        TodayComponentView()
-                    }
-                    NavigationLink {
-                        ArchiveView()
-                    } label: {
-                        ArchiveComponentView()
-                    }
+                }.padding(.horizontal, 16)
+                
+                NavigationLink {
+                    TaskView()
+                } label: {
+                    TodayComponentView()
                 }
                 VStack(spacing: 6.0) {
                     HStack {
                         Text("Награды")
-                            .font(.title2)
-                            .fontWeight(.medium)
-                            .foregroundColor(Color.blue)
+                            .boldFont_18()
+                            .foregroundColor(Color.white)
                             .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(.leading, 4)
-                        
                         Spacer()
                         NavigationLink {
                             AchievementView()
@@ -69,24 +60,26 @@ struct HomeView: View {
                             Text("Все")
                                 .font(.callout)
                                 .fontWeight(.regular)
-                                .foregroundColor(Color.blue)
+                                .foregroundColor(Color.white)
                         }
-                        
-                    }
-                }
-           
-                    LazyVGrid(columns: threeColumnGrid, spacing: 6) {
-                        ForEach(taskManager.achievements) { achievement in
-                            AchievementComponentView(achievement: achievement)
-                                .onTapGesture {
-                                    selectedAchievement = achievement
-                                    isPopupVisible = true
-                                }
-                        }
-                    }
+                    }.padding(.top, 12)
+                }.padding(.horizontal, 16)
                 
+                LazyVGrid(columns: threeColumnGrid, spacing: 6) {
+                    ForEach(taskManager.achievements) { achievement in
+                        AchievementComponentView(achievement: achievement)
+                            .onTapGesture {
+                                selectedAchievement = achievement
+                                isPopupVisible = true
+                            }
+                    }
+                }.padding(.horizontal, 16)
             }
-            .navigationTitle("Сводка")
+            .navigationBarTitle("Сводка")
+            .toolbarColorScheme(.dark, for: .navigationBar)
+            .toolbarBackground(Color.background, for: .navigationBar)
+            .toolbarBackground(.visible, for: .navigationBar)
+            .background(Color.background)
         }
         .overlay(
             popupView
@@ -99,14 +92,13 @@ struct HomeView: View {
     private var popupView: some View {
         if let achievement = selectedAchievement {
             GeometryReader { geometry in
-                Color.black.opacity(0.4)
+                Color.black.opacity(0.7)
                     .edgesIgnoringSafeArea(.all)
                     .onTapGesture {
                         withAnimation {
                             isPopupVisible = false
                         }
                     }
-                
                 VStack {
                     HStack {
                         Text(achievement.title)
@@ -122,9 +114,7 @@ struct HomeView: View {
                                 .foregroundColor(.gray)
                         }
                     }
-                    // Additional content for the popup view
                 }
-                .padding()
                 .background(Color.white)
                 .cornerRadius(10)
                 .shadow(radius: 5)

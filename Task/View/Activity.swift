@@ -7,7 +7,11 @@
 
 import SwiftUI
 
+ 
 struct Activity: View {
+    init() {
+        UITabBar.appearance().barTintColor = UIColor.black
+    }
     var body: some View {
         NavigationView {
             TabView {
@@ -15,11 +19,17 @@ struct Activity: View {
                     .tabItem {
                         Label("Главная", systemImage: "target")
                     }.tag(0)
+                StatisticView()
+                    .tabItem {
+                        Label("Статистика", systemImage: "chart.bar.xaxis")
+                    }.tag(1)
                 Settings()
                     .tabItem {
                         Label("Настройки", systemImage: "gearshape")
-                    }.tag(1)
+                    }.tag(2)
             }
+            .tint(Color.teal)
+            
         }
         .environmentObject(TaskManagerModel())
     }
