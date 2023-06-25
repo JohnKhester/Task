@@ -37,16 +37,16 @@ struct TaskView: View {
                     VStack {
                         ZStack(alignment: .leading) {
                             HStack {
-                                if newTaskTitle.isEmpty && !isPressed {
-                                    Text("Новая задача")
-                                        .foregroundColor(.white.opacity(0.5))
+                          if newTaskTitle.isEmpty && !isPressed {
+                                    Text("New Task")
+                                    .whiteForegroundWithOpacity()
                                         .padding(.horizontal)
                                 }
                             }
                             TextField("", text: $newTaskTitle)
                                 .foregroundColor(.white)
                                 .padding()
-                                .background(Color.white.opacity(0.17))
+                                .background(Color.white.opacity(0.07))
                                 .cornerRadius(12)
                                 .textFieldStyle(.plain)
                                 .accentColor(.white)
@@ -91,12 +91,12 @@ struct TaskView: View {
                         }.padding(.top, 80)
                     } else {
                         ForEach(taskManager.tasks.indices, id: \.self) { index in
-                                // let color = gradientColors[index % gradientColors.count]
                                 VStack {
                                     HStack {
                                         Text(taskManager.tasks[index].title)
-                                            .strikethrough(taskManager.tasks[index].isDone)
-                                            .foregroundColor(Color.white)
+                                            .strikethrough(taskManager.tasks[index].isDone, color: .greenColor)
+                                            .foregroundColor(.white)
+
                                         Spacer()
                                         if isEditing {
                                             Button(action: {
@@ -111,20 +111,20 @@ struct TaskView: View {
                                         Button(action: {
                                             taskManager.toggleTaskDone(taskManager.tasks[index])
                                         }) {
-                                            Image(systemName: taskManager.tasks[index].isDone ? "checkmark.circle" : "circle")
+                                            Image(systemName: taskManager.tasks[index].isDone ? "checkmark.circle.fill" : "circle")
                                                 .foregroundColor(Color.greenColor)
                                         }
                                         .buttonStyle(BorderlessButtonStyle())
                                     }
                                 }
-                                .padding()
+                                .padding(16)                                
                                 .background(Color.white.opacity(0.07))
-                                .cornerRadius(10)
+                                .cornerRadius(12)
                             }
                     }
                   
                 }
-            }
+            }.padding([.leading, .trailing], 16)
         }
         .animation(.easeInOut, value: UUID())
         .toolbar {
@@ -132,14 +132,14 @@ struct TaskView: View {
                 Button(action: {
                     isEditing.toggle()
                 }) {
-                    Text(isEditing ? "Сохранить" : "Редактировать")
+                    Text(isEditing ? "Done" : "Edit")
                 }
             }
         }
     }
     
 }
- 
+
 struct TaskView_Previews: PreviewProvider {
     static var previews: some View {
         TaskView()

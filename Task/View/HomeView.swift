@@ -135,6 +135,7 @@ struct HomeView: View {
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 120, height: 120)
+                        .zIndex(2)
                         .offset(y: isAnimating ? -5 : 5)
                         .rotationEffect(isAnimating ? Angle(degrees: 5) : Angle(degrees: -5))
                         .animation(Animation.easeInOut(duration: 2).repeatForever(autoreverses: true), value: isAnimating)
@@ -145,12 +146,12 @@ struct HomeView: View {
                     
                     VStack {
                         Text(achievement.title)
-                            .boldFont_24()
-                            .foregroundColor(Color.greenColor)
+                            .boldFont_32()
+                            .foregroundColor(Color.white)
                             .padding(.vertical, 4)
                         
                         Text(achievement.description)
-                            .mediumFont_14()
+                            .boldFont_18()
                             .foregroundColor(.white)
                             .padding(.vertical, 6)
                         
@@ -161,23 +162,38 @@ struct HomeView: View {
                             .padding(.bottom, 40)
                     }
                     .padding([.leading, .trailing], 24)
-                    
                     Spacer()
                 }
                 .background(
-                    LinearGradient(
-                        gradient: Gradient(colors: [Color(#colorLiteral(red: 0, green: 0.05882352941, blue: 0.1254901961, alpha: 1)), Color(#colorLiteral(red: 0.1215686277, green: 0.01176470611, blue: 0.4235294163, alpha: 1))]),
-                        startPoint: .bottom,
-                        endPoint: .top
-                    )
+                    ZStack {
+                        LinearGradient(
+                            gradient: Gradient(colors: [Color(#colorLiteral(red: 0.7411764706, green: 0.09019607843, blue: 0.5058823529, alpha: 1)), Color(#colorLiteral(red: 0.8588235294, green: 0.09019607843, blue: 0.1490196078, alpha: 1))]),
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                        
+                        ForEach(0..<Int.random(in: 1...22), id: \.self) { index in
+                            Circle()
+                                .foregroundColor(.white)
+                                .opacity(Double.random(in: 0.1...0.5))
+                                .frame(width: CGFloat.random(in: 2...6), height: CGFloat.random(in: 4...12))
+                                .offset(x: CGFloat.random(in: -250...250), y: CGFloat.random(in: -200...200))
+                                .animation(Animation.easeInOut(duration: Double.random(in: 3...8)).repeatForever(autoreverses: true).delay(Double(index) * 0.8), value: UUID())
+                        }
+                    }
                 )
+
+
                 .cornerRadius(36)
+                .padding([.leading, .trailing], 16)
                 .frame(maxWidth: .infinity)
                 .frame(height: 356)
                 .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
+                
             }
         }
     }
+
     
     func startAchievementAnimation() {
         Timer.scheduledTimer(withTimeInterval: 2, repeats: true) { timer in
