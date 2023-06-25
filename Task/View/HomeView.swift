@@ -13,20 +13,17 @@ struct HomeView: View {
     @EnvironmentObject private var taskManager: TaskManagerModel
     @State private var isPopupVisible = false
     @State private var selectedAchievement: Achievement?
-    @State private var isHeaderTransparent = true
-    
-    @State private var rotationAngle: Double = 0
-    @State private var scale: CGFloat = 1
+    @State private var isAnimating = false
     
     var threeColumnGrid = [GridItem(.flexible(), spacing: 6), GridItem(.flexible(), spacing: 6), GridItem(.flexible(), spacing: 6)]
+    
     var body: some View {
         NavigationStack {
             ZStack {
                 Color.background.ignoresSafeArea(.all)
+                
                 ScrollView {
-                    NavigationLink {
-                        WidgetDetailView()
-                    } label: {
+                    NavigationLink(destination: WidgetDetailView()) {
                         VStack(alignment: .leading) {
                             Text(taskManager.currentDateWithDayFormatted())
                                 .mediumFont_14()
@@ -35,40 +32,48 @@ struct HomeView: View {
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .padding(.top, 8)
                             WidgetComponentView()
-                        }.padding(.horizontal, 16)
+                        }
+                        .padding(.horizontal, 16)
                     }
+                    
                     VStack {
                         HStack {
-                            Text("Сегодня")
+                            Text("Today")
                                 .boldFont_18()
                                 .foregroundColor(Color.white)
                                 .padding(.top, 8)
                             Spacer()
                         }
-                    }.padding(.horizontal, 16)
+                    }
+                    .padding(.horizontal, 16)
                     
-                    NavigationLink {
-                        TaskView()
-                    } label: {
+                    NavigationLink(destination: TaskView()) {
                         TodayComponentView()
                     }
+                    
                     VStack(spacing: 6.0) {
                         HStack {
-                            Text("Награды")
+                            Text("Rewards")
                                 .boldFont_18()
                                 .foregroundColor(Color.white)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                             Spacer()
-                            NavigationLink {
-                                AchievementView()
-                            } label: {
-                                Text("Все")
-                                    .font(.callout)
-                                    .fontWeight(.regular)
-                                    .foregroundColor(Color.greenColor)
+                            NavigationLink(destination: AchievementView()) {
+                                HStack {
+                                    Text("See All")
+                                        .font(.callout)
+                                        .fontWeight(.regular)
+                                        .foregroundColor(Color.greenColor)
+                                    Image(systemName: "chevron.right")
+                                        .foregroundColor(Color.greenColor)
+                                        .opacity(0.5)
+                                }
                             }
-                        }.padding(.top, 12)
-                    }.padding(.horizontal, 16)
+                        }
+                        .padding(.top, 12)
+                    }
+                    .padding(.horizontal, 16)
+                    
                     ZStack {
                         LazyVGrid(columns: threeColumnGrid, spacing: 6) {
                             ForEach(taskManager.achievements) { achievement in
@@ -78,16 +83,16 @@ struct HomeView: View {
                                         isPopupVisible = true
                                     }
                             }
-                        }.padding(8)
-                    } .background {
-                        RoundedRectangle(cornerRadius: 18, style: .continuous)
-                            .fill(.white).opacity(0.07)
-                    }.padding(.horizontal, 16)
+                        }
+                        .padding(8)
+                    }
+                    .background {
+                        RoundedRectangle(cornerRadius: .cornerRadius, style: .continuous)
+                            .fill(Color.darkColor)
+                    }
+                    .padding(.horizontal, 16)
                 }
-                .navigationBarTitle("Сводка")
-                //            .toolbarColorScheme(.dark, for: .navigationBar)
-                //            .toolbarBackground(Color.background, for: .navigationBar)
-                //            .toolbarBackground(.visible, for: .navigationBar)
+                .navigationBarTitle("Goal Tracker")
             }
         }
         .overlay(
@@ -97,6 +102,7 @@ struct HomeView: View {
                 .zIndex(1)
         )
     }
+    
     @ViewBuilder
     private var popupView: some View {
         if let achievement = selectedAchievement {
@@ -108,6 +114,7 @@ struct HomeView: View {
                             isPopupVisible = false
                         }
                     }
+                
                 VStack {
                     HStack {
                         Spacer()
@@ -116,76 +123,67 @@ struct HomeView: View {
                                 isPopupVisible = false
                             }
                         }) {
-                            Image(systemName: "xmark.circle.fill")
-                                .foregroundColor(.gray)
+                            Image(systemName: "xmark")
+                                .whiteForegroundWithOpacity()
                         }
                     }
-                     Spacer()
-                    if achievement.isUnlocked {
-                        Image(achievement.colorImage)
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 120, height: 120)
-                            .rotationEffect(.degrees(rotationAngle))
-                            .scaleEffect(scale)
-                            .animation(Animation.linear(duration: 2).repeatForever(autoreverses: true), value: UUID())
-                            .onAppear {
-                                animateImage()
-                            }
+                    .padding([.trailing, .top], 24)
+                    
+                    Spacer()
+                    
+                    Image(achievement.isUnlocked ? achievement.colorImage : achievement.image)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 120, height: 120)
+                        .offset(y: isAnimating ? -5 : 5)
+                        .rotationEffect(isAnimating ? Angle(degrees: 5) : Angle(degrees: -5))
+                        .animation(Animation.easeInOut(duration: 2).repeatForever(autoreverses: true), value: isAnimating)
+                        .onAppear {
+                            isAnimating = true
+                        }
+                        .padding(.vertical, 6)
+                    
+                    VStack {
+                        Text(achievement.title)
+                            .boldFont_24()
+                            .foregroundColor(Color.greenColor)
+                            .padding(.vertical, 4)
                         
-                        Text(achievement.title)
-                            .boldFont_24()
-                            .foregroundColor(.white)
                         Text(achievement.description)
-                            .mediumFont_12()
-                        Text(achievement.isUnLockedDecription)
-                            .mediumFont_12()
-                    } else {
-                        Image(achievement.image)
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 120, height: 120)
-                        Text(achievement.title)
-                            .boldFont_24()
+                            .mediumFont_14()
                             .foregroundColor(.white)
-                        Text(achievement.description)
-                            .mediumFont_12()
-                        Text(achievement.isLockedDescription)
-                            .mediumFont_12()
+                            .padding(.vertical, 6)
+                        
+                        Text(achievement.isUnlocked ? achievement.isUnLockedDecription : achievement.isLockedDescription)
+                            .mediumFont_13()
                             .foregroundColor(.white)
+                            .multilineTextAlignment(.center)
+                            .padding(.bottom, 40)
                     }
-                        
+                    .padding([.leading, .trailing], 24)
                     
                     Spacer()
                 }
                 .background(
                     LinearGradient(
-                        gradient: Gradient(colors: [Color(#colorLiteral(red: 0, green: 0.05882352941, blue: 0.1254901961, alpha: 1)), Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))]),
-                        startPoint: .top,
-                        endPoint: .bottom
+                        gradient: Gradient(colors: [Color(#colorLiteral(red: 0, green: 0.05882352941, blue: 0.1254901961, alpha: 1)), Color(#colorLiteral(red: 0.1215686277, green: 0.01176470611, blue: 0.4235294163, alpha: 1))]),
+                        startPoint: .bottom,
+                        endPoint: .top
                     )
-                    
                 )
                 .cornerRadius(36)
                 .frame(maxWidth: .infinity)
-                .frame(height: 346)
+                .frame(height: 356)
                 .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
             }
         }
     }
     
-    func animateImage() {
-        let randomDuration = Double.random(in: 0.5...1.5)
-        let randomRotation = Bool.random() ? 360.0 : -360.0
-        let randomScale = CGFloat.random(in: 0.8...1.2)
-
-        withAnimation(.easeInOut(duration: randomDuration)) {
-            rotationAngle += randomRotation
-            scale = randomScale
-        }
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + randomDuration) {
-            animateImage()
+    func startAchievementAnimation() {
+        Timer.scheduledTimer(withTimeInterval: 2, repeats: true) { timer in
+            withAnimation(Animation.easeInOut(duration: 0.5)) {
+                isAnimating.toggle()
+            }
         }
     }
 }

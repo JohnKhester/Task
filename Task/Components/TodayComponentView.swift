@@ -11,7 +11,7 @@ struct TodayComponentView: View {
     @EnvironmentObject private var taskManager: TaskManagerModel
     var body: some View {
         VStack {
-            HStack(alignment: .center, spacing: 12) {
+            HStack(alignment: .center, spacing: 14) {
                 Image(systemName: "list.clipboard.fill")
                     .mediumFont_18()
                     .foregroundColor(.white)
@@ -23,11 +23,11 @@ struct TodayComponentView: View {
                             endPoint: .trailing
                         )
                     )
-                    .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                    .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
 
                 
                 VStack(alignment: .leading) {
-                    Text("Задача")
+                    Text("My All Tasks")
                         .font(.system(size: 14, weight: .medium))
                         .whiteForegroundWithOpacity()
                     
@@ -40,11 +40,11 @@ struct TodayComponentView: View {
                     .foregroundColor(Color.white)
                     .opacity(0.5)
             }
-            .padding(12)
+            .padding(16)
             .frame(maxWidth: .infinity)
             .background {
-                RoundedRectangle(cornerRadius: 18, style: .continuous)
-                    .fill(.white).opacity(0.07)
+                RoundedRectangle(cornerRadius: .cornerRadius, style: .continuous)
+                    .fill(Color.darkColor)
             }
         }.padding(.horizontal, 16)
     }

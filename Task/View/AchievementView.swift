@@ -11,6 +11,7 @@ struct AchievementView: View {
     @State private var isPopupVisible = false
     @State private var selectedAchievement: Achievement?
     @EnvironmentObject private var taskManager: TaskManagerModel
+    @State private var isAnimating = false
     var threeColumnGrid = [GridItem(.flexible(), spacing: 6), GridItem(.flexible(), spacing: 6), GridItem(.flexible(), spacing: 6)]
     
     var body: some View {
@@ -19,7 +20,7 @@ struct AchievementView: View {
             ScrollView {
                 VStack {
                     HStack {
-                        Text("Награды")
+                        Text("Victory Hall")
                             .boldFont_32()
                             .foregroundColor(.white)
                         Spacer()
@@ -37,15 +38,10 @@ struct AchievementView: View {
                 }
             }
         }
-//        .navigationBarTitle("Награды")
-//        .toolbarColorScheme(.dark, for: .navigationBar)
-//        .toolbarBackground(Color.background, for: .navigationBar)
-//        .toolbarBackground(.visible, for: .navigationBar)
-//        .background(Color.background)
         .overlay(
             popupView
                 .opacity(isPopupVisible ? 1 : 0)
-                .animation(Animation.easeInOut(duration: 1.0), value: UUID())
+                .animation(Animation.easeInOut(duration: 0.3), value: UUID())
                 .zIndex(1)
         )
     }
@@ -54,7 +50,7 @@ struct AchievementView: View {
     private var popupView: some View {
         if let achievement = selectedAchievement {
             GeometryReader { geometry in
-                Color.black.opacity(0.4)
+                Color.black.opacity(0.7)
                     .edgesIgnoringSafeArea(.all)
                     .onTapGesture {
                         withAnimation {
@@ -64,26 +60,63 @@ struct AchievementView: View {
                 
                 VStack {
                     HStack {
-                        Text(achievement.title)
-                            .font(.title)
-                            .bold()
                         Spacer()
                         Button(action: {
                             withAnimation {
                                 isPopupVisible = false
                             }
                         }) {
-                            Image(systemName: "xmark.circle.fill")
-                                .foregroundColor(.gray)
+                            Image(systemName: "xmark")
+                                .whiteForegroundWithOpacity()
                         }
                     }
-                    // Additional content for the popup view
+                    .padding([.trailing, .top], 24)
+                    
+                    Spacer()
+                    
+                    Image(achievement.isUnlocked ? achievement.colorImage : achievement.image)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 120, height: 120)
+                        .offset(y: isAnimating ? -5 : 5)
+                        .rotationEffect(isAnimating ? Angle(degrees: 5) : Angle(degrees: -5))
+                        .animation(Animation.easeInOut(duration: 2).repeatForever(autoreverses: true), value: isAnimating)
+                        .onAppear {
+                            isAnimating = true
+                        }
+                        .padding(.vertical, 6)
+                    
+                    VStack {
+                        Text(achievement.title)
+                            .boldFont_24()
+                            .foregroundColor(Color.greenColor)
+                            .padding(.vertical, 4)
+                        
+                        Text(achievement.description)
+                            .mediumFont_14()
+                            .foregroundColor(.white)
+                            .padding(.vertical, 6)
+                        
+                        Text(achievement.isUnlocked ? achievement.isUnLockedDecription : achievement.isLockedDescription)
+                            .mediumFont_13()
+                            .foregroundColor(.white)
+                            .multilineTextAlignment(.center)
+                            .padding(.bottom, 40)
+                    }
+                    .padding([.leading, .trailing], 24)
+                    
+                    Spacer()
                 }
-                .padding()
-                .background(Color.white)
-                .cornerRadius(10)
-                .shadow(radius: 5)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(
+                    LinearGradient(
+                        gradient: Gradient(colors: [Color(#colorLiteral(red: 0, green: 0.05882352941, blue: 0.1254901961, alpha: 1)), Color(#colorLiteral(red: 0.1215686277, green: 0.01176470611, blue: 0.4235294163, alpha: 1))]),
+                        startPoint: .bottom,
+                        endPoint: .top
+                    )
+                )
+                .cornerRadius(36)
+                .frame(maxWidth: .infinity)
+                .frame(height: 356)
                 .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
             }
         }

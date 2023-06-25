@@ -24,10 +24,11 @@ struct AchievementComponentView: View {
                     Image(achievement.image)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
+                        .opacity(0.5)
                         .frame(width: 90, height: 90)
                 }
                 Text(achievement.title)
-                    .mediumFont_12()
+                    .mediumFont_13()
                     .foregroundColor(Color.white)
                 //Text(achievement.date)
             }

@@ -17,19 +17,18 @@ struct Activity: View {
             TabView {
                 HomeView()
                     .tabItem {
-                        Label("Главная", systemImage: "target")
+                        Label("Goal", systemImage: "target")
                     }.tag(0)
-                StatisticView()
-                    .tabItem {
-                        Label("Статистика", systemImage: "chart.bar.xaxis")
-                    }.tag(1)
+//                StatisticView()
+//                    .tabItem {
+//                        Label("Statistic", systemImage: "chart.bar.xaxis")
+//                    }.tag(1)
                 Settings()
                     .tabItem {
-                        Label("Настройки", systemImage: "gearshape")
-                    }.tag(2)
+                        Label("Setting", systemImage: "gearshape")
+                    }.tag(1)
             }
             .tint(Color.greenColor)
-            
         }
         .environmentObject(TaskManagerModel())
     }

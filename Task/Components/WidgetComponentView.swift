@@ -9,45 +9,64 @@ import SwiftUI
 
 struct WidgetComponentView: View {
     @EnvironmentObject private var taskManager: TaskManagerModel
-//    @Environment(\.colorScheme) var colorScheme
     @State private var progress: CGFloat = 0.0
     
     var body: some View {
         HStack {
             VStack(alignment: .leading) {
-                HStack {
-                    RoundedRectangle(cornerRadius: 2)
-                        .fill(Color.greenColor)
-                        .frame(width: 8, height: 8)
-                    Text("Задачи")
-                        .font(Font.system(size: 14))
-                        .whiteForegroundWithOpacity()
+                VStack(alignment: .leading) {
+                    HStack {
+                        RoundedRectangle(cornerRadius: 2)
+                            .fill(Color.red)
+                            .frame(width: 8, height: 8)
+                        Text("Total Comp. Tasks")
+                            .font(Font.system(size: 14))
+                            .foregroundColor(Color.white)
+                    }
+                    Text("\(taskManager.totalCompletedTasksCount)")
+                        .boldFont_32()
+                        .foregroundColor(Color.white)
+                        .padding(.top, -8)
                 }
-                Text("\(taskManager.completedTasksCount)/\(taskManager.totalTasksCount)")
-                    .boldFont_24()
-                    .foregroundColor(Color.white)
-            }
-            .padding(.trailing, 18)
-            VStack(alignment: .leading) {
                 HStack {
-                    RoundedRectangle(cornerRadius: 2)
-                        .fill(Color.blueColor)
-                        .frame(width: 8, height: 8)
-                    Text(taskManager.titleTarget)
-                        .font(Font.system(size: 14))
-                        .whiteForegroundWithOpacity()
+                    VStack(alignment: .leading) {
+                        HStack {
+                            RoundedRectangle(cornerRadius: 2)
+                                .fill(Color.greenColor)
+                                .frame(width: 8, height: 8)
+                            Text("Tasks")
+                                .font(Font.system(size: 14))
+                                .foregroundColor(Color.white)
+                        }
+                        Text("\(taskManager.completedTasksCount)/\(taskManager.totalTasksCount)")
+                            .boldFont_18()
+                            .foregroundColor(Color.white)
+                            .padding(.top, -8)
+                    }
+                    .padding(.trailing, 18)
+                    VStack(alignment: .leading) {
+                        HStack {
+                            RoundedRectangle(cornerRadius: 2)
+                                .fill(Color.blueColor)
+                                .frame(width: 8, height: 8)
+                            Text(taskManager.titleTarget)
+                                .font(Font.system(size: 14))
+                                .foregroundColor(Color.white)
+                        }
+                        Text("\(taskManager.savedTargetCount)")
+                            .boldFont_18()
+                            .foregroundColor(Color.white)
+                            .padding(.top, -8)
+                    }
                 }
-                Text("\(taskManager.savedTargetCount)")
-                    .boldFont_24()
-                    .foregroundColor(Color.white)
             }
             Spacer()
             ZStack {
                 Text(String(format: "%.0f%%", progress * 100))
                     .boldFont_16()
                     .foregroundColor(Color.white)
-                CircularCharView(progress: progress,  startColor: .blueColor, endColor: .greenColor)
-                    .frame(width: 80, height: 80)
+                CircularCharView(progress: progress, startColor: .blueColor, endColor: .greenColor)
+                    .frame(width: 120, height: 120)
                     .animation(.easeInOut(duration: 1), value: UUID())
                     .onAppear {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -55,20 +74,20 @@ struct WidgetComponentView: View {
                                 progress = taskManager.completionPercentage
                             }
                         }
-                 }
-            }.padding(.trailing, 8)
-        }.padding(18)
-        .frame(maxWidth: .infinity)
-        .frame(height: 140)
-        .background {
-            RoundedRectangle(cornerRadius: 18, style: .continuous)
-                .fill(.white).opacity(0.07)
+                    }
+            }
+            .padding(.trailing, 8)
         }
+        .padding(18)
+        .frame(maxWidth: .infinity)
+        .frame(height: 170)
+        .background(
+            RoundedRectangle(cornerRadius: .cornerRadius, style: .continuous)
+                .fill(Color.darkColor)
+        )
         
     }
 }
-
-
 
 struct WidgetComponentView_Previews: PreviewProvider {
     static var previews: some View {

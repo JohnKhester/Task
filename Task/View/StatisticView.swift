@@ -40,7 +40,6 @@ struct StatisticView: View {
     
     private func calculateTotalAchievedGoals() -> Int {
         var totalAchievedGoals = 0
-        
         for achievement in taskManager.achievements {
             if taskManager.achievementStatus[achievement.id] == true {
                 totalAchievedGoals += 1

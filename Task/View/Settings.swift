@@ -15,36 +15,52 @@ struct Settings: View {
                 Button(action: {
                     self.isChangeTargetActive = true
                 }, label: {
-                    Text("Изменить цель задач")
+                    Text("Change Task Goal")
                 })
                 
-                Text("Уведомления")
-                Text("Конфидициальность")
-                Text("Отключить рекламу")
+                Text("Notifications")
+                Text("Privacy")
+                Text("ADS ")
             }.sheet(isPresented: $isChangeTargetActive) {
+                ZStack {
+                    Color.background.ignoresSafeArea(.all)
                 VStack {
                     HStack {
                         Button(action: {
                             self.isChangeTargetActive.toggle()
                         }) {
-                            Text("Отменить")
-                        }
+                            Text("Cancel")
+                                .foregroundColor(Color.greenColor)
+                        }.padding([.leading, .top], 24)
                         Spacer()
                     }
+                    Spacer()
                     VStack {
-                        Text("Title")
-                            .font(.title)
-                        Text("Описание")
+                        Text("Goal Tracker")
+                            .boldFont_32()
+                            .foregroundColor(.white)
+                            .padding(.vertical, 16)
+                        Text("Stay motivated and laser-focused on your objectives.Get ready to unlock your full potential and unleash your productivity with Goal Tracker.")
+                            .foregroundColor(.white)
+                            .multilineTextAlignment(.center)
+                            .mediumFont_14()
+                            .padding(.horizontal, 30)
+                        
                     }.padding(.vertical, 16)
                     CounterTargetComponents(isChangeTargetActive: $isChangeTargetActive)
+                    Spacer()
                 }
             }
-            .navigationTitle("Настройки")
-            .navigationBarTitleDisplayMode(.inline) 
+                
+            }
+            .navigationTitle("Settings")
+            .navigationBarTitleDisplayMode(.inline)
+            
         }
     }
 }
 
+ 
 struct Settings_Previews: PreviewProvider {
     static var previews: some View {
         Settings()

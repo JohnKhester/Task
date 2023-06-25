@@ -37,64 +37,64 @@ struct TaskProgress: Identifiable {
 
 class TaskManagerModel: ObservableObject {
     @Published var tasks: [Task] = []
-    @Published var titleTarget: String = "Цель"
-    @Published var targetCount: Int = 3 // Цель пользователя
+    @Published var titleTarget: String = "Goal"
+    @Published var targetCount: Int = 3 
     @Published var savedTargetCount: Int = 3
 
     @Published var achievements: [Achievement] = [
         Achievement(
-            title: "Новичок",
+            title: "Beginner",
             date: "1/08/2023",
             image: "1",
             colorImage: "colorful_1",
-            description: "Заработайте первые 10 AchievoPoints",
-            isLockedDescription:"Закройте свои первые 10 задач и начни свой путь к достижению целей.",
-            isUnLockedDecription: "Вы закрыли свои первые 10 задач и начали свой путь к достижению целей. Поздравляем с первым шагом!"),
+            description: "10 Tasks",
+            isLockedDescription: "Close your first 10 tasks and start your journey towards achieving your goals.",
+            isUnLockedDecription:"You have closed your first 10 tasks and started your journey towards achieving your goals."),
         
         Achievement(
-            title: "Активный",
+            title: "Active",
             date: "2/08/2023",
             image: "2",
             colorImage: "colorful_2",
-            description: "Заработайте 25 AchievoPoints",
-            isLockedDescription: "Закройте 25 задач и продолжаете двигаться вперед.",
-            isUnLockedDecription: "Вы закрыли 25 задач и продолжаете двигаться вперед."),
+            description: "25 Tasks",
+            isLockedDescription: "Close 25 tasks to unlock and keep moving forward.",
+            isUnLockedDecription: "You have closed 25 tasks and continue to move forward."),
         
         Achievement(
-            title: "Скаут",
+            title: "Scout",
             date: "3/08/2023",
             image: "3",
             colorImage: "colorful_3",
-            description: "Заработайте 70 AchievoPoints",
-            isLockedDescription: "Закройте 70 задач и стремитесь к достижению ваших целей.",
-            isUnLockedDecription: "Вы закрыли 70 задач, что свидетельствует о вашей настойчивости и постоянном стремлении целей."),
+            description: "70 Tasks",
+            isLockedDescription: "Close 70 tasks and strive towards achieving your goals.",
+            isUnLockedDecription: "You have closed 70 tasks, demonstrating your perseverance and constant goal pursuit"),
         
         Achievement(
-            title: "Искатель",
+            title: "Seeker",
             date: "3/08/2023",
             image: "4",
             colorImage: "colorful_4",
-            description: "Заработайте 100 AchievoPoints",
-            isLockedDescription: "Закройте 100 задач и продолжаете уверенно двигаться к своим целям.",
-            isUnLockedDecription: "Вы закрыли 100 задач и продолжаете уверенно двигаться к своим целям. Ваше упорство и преданность достойны восхищения!"),
+            description: "100 Tasks",
+            isLockedDescription: "Close 100 tasks and continue confidently towards your goals.",
+            isUnLockedDecription: "You have closed 100 tasks and continue confidently towards your goals. Your perseverance and dedication are admirable!"),
         
         Achievement(
-            title: "Обитель",
+            title: "Dweller",
             date: "3/08/2023",
             image: "5",
             colorImage: "colorful_5",
-            description: "Заработайте 125 AchievoPoints",
-            isLockedDescription: "Закройте 120 задач и продолжаете покорять новые вершины",
-            isUnLockedDecription: "Вы закрыли 125 задач и продолжаете покорять новые вершины. Ваше настойчивое усилие и самодисциплина впечатляют!"),
+            description: "125 Tasks",
+            isLockedDescription: "Close 120 tasks and keep conquering new heights",
+            isUnLockedDecription: "You have closed 125 tasks and continue to conquer new heights. Your persistent effort and self-discipline are impressive!"),
         
         Achievement(
-            title: "Джедай",
+            title: "Jedi",
             date: "3/08/2023",
             image: "6",
             colorImage: "colorful_6",
-            description: "Заработайте 150 AchievoPoints",
-            isLockedDescription: "Закройте 150 задач и продолжаете уверенно двигаться к своим целям.",
-            isUnLockedDecription: "Вы закрыли 150 задач. Ваша регулярность и сила воли являются примером для других пользователей AchievoTasks."),
+            description: "150 Tasks",
+            isLockedDescription: "Close 150 tasks and continue confidently towards your goals.",
+            isUnLockedDecription: "You have closed 150 tasks. Your consistency and willpower serve as an example to other AchievoTasks users"),
         //Achievement(title: "Default", date: "", image: "default", colorImage: "colorful_default")
     ]
 
@@ -123,7 +123,8 @@ class TaskManagerModel: ObservableObject {
             return Double(totalCompletedCount) / Double(totalTaskCount)
         }
     }
-    // Function to update the progress for a specific day
+    
+    // функция обновляет прогресс выполнения задачи для указанного дня, основываясь на значении completedTasksCount.
     func updateTaskProgress(forDay day: String) {
         if let progress = taskProgress[day] {
             var updatedProgress = progress
@@ -132,16 +133,14 @@ class TaskManagerModel: ObservableObject {
         }
     }
     
-    
-    
     private var achievementTargets: [String: Int] = [
         "Default": 0,
-        "Новичок": 3,
-        "Активный": 5,
-        "Скаут": 6,
-        "Искатель": 7,
-        "Обитель": 8,
-        "Джедай": 9
+        "Beginner": 1,
+        "Active": 2,
+        "Scout": 3,
+        "Seeker": 4,
+        "Dweller": 5,
+        "Jedi": 7
     ]
     
     var totalTasksCount: Int {
@@ -223,7 +222,7 @@ class TaskManagerModel: ObservableObject {
         targetCount += 1
     }
     
-    func dicrement() {
+    func decrement() {
         targetCount -= 1
     }
 

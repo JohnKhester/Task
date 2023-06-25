@@ -15,33 +15,47 @@ struct ChangeTargetButtonView: View {
                 self.isChangeTargetActive.toggle()
             }, label: {
                 ZStack {
-                        Text("Изменить цель")
+                        Text("Change Goal")
                             .font(.headline)
                             .foregroundColor(.black)
                 }
                 .frame(maxWidth: .infinity)
-                .frame(height: 62)
-                .padding(.horizontal, 16)
-                .background(Color.gray.opacity(0.2))
-                .cornerRadius(16)
+                .padding(14)
+                .background {
+                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                        .fill(Color.greenColor)
+                }
             })
             .sheet(isPresented: $isChangeTargetActive) {
+                ZStack {
+                    Color.background.ignoresSafeArea(.all)
                 VStack {
                     HStack {
                         Button(action: {
                             self.isChangeTargetActive.toggle()
                         }) {
-                            Text("Отменить")
-                        }
+                            Text("Cancel")
+                                .foregroundColor(Color.greenColor)
+                        }.padding([.leading, .top], 24)
                         Spacer()
                     }
+                    Spacer()
                     VStack {
-                        Text("Title")
-                            .font(.title)
-                        Text("Описание")
+                        Text("Goal Tracker")
+                            .boldFont_32()
+                            .foregroundColor(.white)
+                            .padding(.vertical, 16)
+                        Text("Stay motivated and laser-focused on your objectives.Get ready to unlock your full potential and unleash your productivity with Goal Tracker.")
+                            .foregroundColor(.white)
+                            .multilineTextAlignment(.center)
+                            .mediumFont_14()
+                            .padding(.horizontal, 30)
+                        
                     }.padding(.vertical, 16)
                     CounterTargetComponents(isChangeTargetActive: $isChangeTargetActive)
+                    Spacer()
                 }
+            }
             }
         }
     }

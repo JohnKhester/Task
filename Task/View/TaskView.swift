@@ -54,14 +54,14 @@ struct TaskView: View {
                                     isPressed = true
                                 }
                                 
-                        }
+                        }                        
                         Button(action: {
                             taskManager.addTask(title: newTaskTitle)
                             newTaskTitle = ""
                             isEditing = false
                         }) {
-                            Text("Готово")
-                                .foregroundColor(newTaskTitle.isEmpty ? .gray : .white)
+                            Text("Done")
+                                .foregroundColor(newTaskTitle.isEmpty ? .gray : .black)
                         }
                         .frame(maxWidth: .infinity)
                         .padding(14)
@@ -72,7 +72,7 @@ struct TaskView: View {
                         .disabled(newTaskTitle.isEmpty)
                     }
                     HStack {
-                        Text("Мои задачи")
+                        Text("My Tasks")
                             .boldFont_18()
                             .foregroundColor(Color.white)
                             .padding(.vertical, 12)
@@ -80,8 +80,8 @@ struct TaskView: View {
                     }
                     if taskManager.tasks.isEmpty {
                         VStack {
-                            Text("У вас еще нет задач")
-                                .mediumFont_12()
+                            Text("No Tasks for Today")
+                                .mediumFont_13()
                                 .whiteForegroundWithOpacity()
                                 .padding(.vertical, 12)
                             Image("EmptyTask")
