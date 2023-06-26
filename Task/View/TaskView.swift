@@ -62,13 +62,14 @@ struct TaskView: View {
                         }) {
                             Text("Done")
                                 .foregroundColor(newTaskTitle.isEmpty ? .gray : .black)
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
                         }
-                        .frame(maxWidth: .infinity)
                         .padding(14)
-                        .background {
+                        .background(
                             RoundedRectangle(cornerRadius: 12, style: .continuous)
                                 .fill(newTaskTitle.isEmpty ? Color.gray.opacity(0.2) : Color.greenColor)
-                        }
+                        )
+                        .contentShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
                         .disabled(newTaskTitle.isEmpty)
                     }
                     HStack {
@@ -140,6 +141,22 @@ struct TaskView: View {
     
 }
 
+struct CustomButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .foregroundColor(.black)
+            .padding(14)
+            .background(
+                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    .fill(configuration.isPressed ? Color.green.opacity(0.5) : Color.green)
+            )
+            .contentShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+            .opacity(configuration.isPressed ? 0.5 : 1.0)
+            .disabled(configuration.isPressed)
+    }
+}
+
+ 
 struct TaskView_Previews: PreviewProvider {
     static var previews: some View {
         TaskView()
