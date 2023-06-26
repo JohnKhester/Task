@@ -16,31 +16,23 @@ struct WidgetDetailView: View {
     var twoColumnGrid = [GridItem(.flexible(), spacing: 16), GridItem(.flexible(), spacing: 6)]
     
     var body: some View {
-        ZStack {
-            Color.background.ignoresSafeArea(.all)
-            
-            ScrollView {
-                VStack(spacing: 32) {
-                    HStack {
-                        Text("Activity")
-                            .boldFont_32()
-                            .foregroundColor(.white)
+        NavigationStack {
+            ZStack {
+                Color.background.ignoresSafeArea(.all)
+                ScrollView {
+                    VStack(alignment: .leading) {
+                        LazyVGrid(columns: twoColumnGrid, spacing: 6) {
+                            ActivityBlock(color: .greenColor, title: "All Task", count: taskManager.totalTasksCount)
+                            
+                            ActivityBlock(color: .blueColor, title: "Completed Task", count: taskManager.completedTasksCount)
+                        }
+                        .padding(.bottom, 16)
                         
-                        Spacer()
+                        ChangeTargetButtonView()
                     }
-                    .padding(.leading, 12)
-                    
-                    LazyVGrid(columns: twoColumnGrid, spacing: 6) {
-                        ActivityBlock(color: .greenColor, title: "All Task", count: taskManager.totalTasksCount)
-                        
-                        ActivityBlock(color: .blueColor, title: "All Goal", count: taskManager.completedTasksCount)
-                    }
-                    .padding(.bottom, 6)
-                    
-                    ChangeTargetButtonView()
-                }
-            }.padding([.leading, .trailing], 16)
-        }
+                }.padding([.leading, .trailing], 16)
+            }
+        }.navigationTitle("Activity")
     }
 }
 

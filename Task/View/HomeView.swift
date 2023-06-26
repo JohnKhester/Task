@@ -182,8 +182,6 @@ struct HomeView: View {
                         }
                     }
                 )
-
-
                 .cornerRadius(36)
                 .padding([.leading, .trailing], 16)
                 .frame(maxWidth: .infinity)

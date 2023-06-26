@@ -15,27 +15,22 @@ struct AchievementView: View {
     var threeColumnGrid = [GridItem(.flexible(), spacing: 6), GridItem(.flexible(), spacing: 6), GridItem(.flexible(), spacing: 6)]
     
     var body: some View {
-        ZStack {
-            Color.background.edgesIgnoringSafeArea(.all)
-            ScrollView {
-                VStack {
-                    HStack {
-                        Text("Victory Hall")
-                            .boldFont_32()
-                            .foregroundColor(.white)
-                        Spacer()
-                    }.padding(.leading, 16)
-                        .foregroundColor(.white.opacity(0.5))
-                    LazyVGrid(columns: threeColumnGrid, spacing: 6) {
-                        ForEach(taskManager.achievements) { achievement in
-                            AchievementComponentView(achievement: achievement)
-                                .onTapGesture {
-                                    selectedAchievement = achievement
-                                    isPopupVisible = true
-                                }
+        NavigationStack {
+            ZStack {
+                Color.background.edgesIgnoringSafeArea(.all)
+                ScrollView {
+                    VStack {
+                        LazyVGrid(columns: threeColumnGrid, spacing: 6) {
+                            ForEach(taskManager.achievements) { achievement in
+                                AchievementComponentView(achievement: achievement)
+                                    .onTapGesture {
+                                        selectedAchievement = achievement
+                                        isPopupVisible = true
+                                    }
+                            }
                         }
                     }
-                }
+                }.navigationTitle("Victory Hall")
             }
         }
         .overlay(
@@ -43,7 +38,7 @@ struct AchievementView: View {
                 .opacity(isPopupVisible ? 1 : 0)
                 .animation(Animation.easeInOut(duration: 0.3), value: UUID())
                 .zIndex(1)
-        )
+        )       
     }
     
     @ViewBuilder

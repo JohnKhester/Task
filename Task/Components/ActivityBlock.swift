@@ -13,27 +13,30 @@ struct ActivityBlock: View {
     var count: Int
     
     var body: some View {
-        VStack(alignment: .leading) {
-            HStack {
-                RoundedRectangle(cornerRadius: 2)
-                    .fill(color)
-                    .frame(width: 8, height: 8)
+        HStack {
+            VStack(alignment: .leading) {
+                    HStack {
+                        RoundedRectangle(cornerRadius: 2)
+                            .fill(color)
+                            .frame(width: 8, height: 8)
+                        
+                        Text(title)
+                            .font(Font.system(size: 14))
+                            .whiteForegroundWithOpacity()
+                    }
+                    Text("\(count)")
+                        .boldFont_24()
+                        .foregroundColor(.white)
                 
-                Text(title)
-                    .font(Font.system(size: 14))
-                    .whiteForegroundWithOpacity()
             }
-            
-            Text("\(count)")
-                .boldFont_24()
-                .foregroundColor(.white)
+            Spacer()
         }
+        .padding(.leading, 16)
         .frame(maxWidth: .infinity)
         .frame(height: 80)
         .background(
             RoundedRectangle(cornerRadius: .cornerRadius, style: .continuous)
-                .fill(.white)
-                .opacity(0.07)
+                .fill(Color.darkColor)
         )
     }
 }
