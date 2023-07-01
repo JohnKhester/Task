@@ -20,7 +20,7 @@ struct StatisticView: View {
                     VStack {
                         Spacer(minLength: Constants.navigationBarHeight)
                             .frame(width: geometry.size.width, height: Constants.navigationBarHeight, alignment: .top)
-                        Text("\(taskManager.totalCompletedTasksCount)")
+                        Text("\(taskManager.completedTaskCount)")
                             .font(.largeTitle)
                             .foregroundColor(.white)
                         Text("Общее количество выполненных задач:")

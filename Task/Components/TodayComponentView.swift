@@ -10,11 +10,7 @@ import SwiftUI
 struct TodayComponentView: View {
     @EnvironmentObject private var taskManager: TaskManagerModel
     @FetchRequest(sortDescriptors: []) private var tasksItems: FetchedResults<TaskData>
-    
-//    var totalTasksCount: Int {
-//        tasksItems.count
-//    }
-//
+
     var body: some View {
         VStack {
             HStack(alignment: .center, spacing: 14) {

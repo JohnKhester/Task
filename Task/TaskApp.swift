@@ -10,15 +10,14 @@ import SwiftUI
 @main
 struct TaskApp: App {
     @StateObject private var taskManager = TaskManagerModel()
-    @StateObject private var dataManager = DataManager()
+    let persistenceController = PersistenceController.shared
     
     var body: some Scene {
         WindowGroup {
             Activity()
                 .preferredColorScheme(.dark)
                 .environmentObject(taskManager)
-                .environmentObject(dataManager)
-                .environment(\.managedObjectContext, dataManager.container.viewContext)
+                .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
 }

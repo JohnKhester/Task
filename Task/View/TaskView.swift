@@ -7,14 +7,17 @@
 
 
 import SwiftUI
+import CoreData
 
 
 struct TaskView: View {
-
-    @ObservedObject var taskModel = TaskManagerModel()
-    @EnvironmentObject var manager: DataManager
-    @FetchRequest(sortDescriptors: []) private var tasksItems: FetchedResults<TaskData>
-    @Environment(\.managedObjectContext) private var context
+    @EnvironmentObject var taskModel: TaskManagerModel
+    
+    // MARK: All Environment Values in one Variable
+    @Environment(\.self) var env
+    
+    // MARK: Fetching Task
+    @FetchRequest(entity: TaskData.entity(), sortDescriptors: [], predicate: nil, animation: .easeInOut) var tasksItems: FetchedResults<TaskData>
 
     @State private var isEditing = false
     @State private var isPressed = false
@@ -26,15 +29,16 @@ struct TaskView: View {
             ScrollView {
                 VStack(spacing: 6) {
                     VStack {
+                        Text("\(taskModel.countCompletedTasks())")
                         ZStack(alignment: .leading) {
                             HStack {
-                          if taskModel.titleTask.isEmpty && !isPressed {
+                          if taskModel.taskTitle.isEmpty && !isPressed {
                                     Text("New Task")
                                     .whiteForegroundWithOpacity()
                                         .padding(.horizontal)
                                 }
                             }
-                            TextField("", text: $taskModel.titleTask)
+                            TextField("", text: $taskModel.taskTitle)
                                 .foregroundColor(.white)
                                 .padding()
                                 .background(Color.white.opacity(0.07))
@@ -47,19 +51,21 @@ struct TaskView: View {
                                 
                         }                        
                         Button(action: {
-                            taskModel.addTask(context: context)
+                            if taskModel.addTask(context: env.managedObjectContext) {
+                                print("Задача успешно создана")
+                            }
                         }) {
                             Text("Done")
-                                .foregroundColor(taskModel.titleTask.isEmpty ? .gray : .black)
+                                .foregroundColor(taskModel.taskTitle.isEmpty ? .gray : .black)
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                         }
                         .padding(14)
                         .background(
                             RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                .fill(taskModel.titleTask.isEmpty ? Color.gray.opacity(0.2) : Color.greenColor)
+                                .fill(taskModel.taskTitle.isEmpty ? Color.gray.opacity(0.2) : Color.greenColor)
                         )
                         .contentShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
-                        .disabled(taskModel.titleTask.isEmpty)
+                        .disabled(taskModel.taskTitle.isEmpty)
                     }
                     HStack {
                         Text("My Tasks")
@@ -90,7 +96,7 @@ struct TaskView: View {
                                     Spacer()
                                     if isEditing {
                                         Button(action: {
-                                            taskModel.deleteTask(task: taskItem, context: context)
+                                             taskModel.deleteTask(task: taskItem, context: env.managedObjectContext)
                                         }) {
                                             Image(systemName: "trash")
                                                 .foregroundColor(.red)
@@ -98,7 +104,7 @@ struct TaskView: View {
                                         .buttonStyle(BorderlessButtonStyle())
                                     }
                                     Button(action: {
-                                        taskModel.toggleTaskDone(task: taskItem, context: context)
+                                        taskModel.toggleTaskDone(task: taskItem, context: env.managedObjectContext)
                                     }) {
                                         Image(systemName: taskItem.isDone ? "checkmark.circle.fill" : "circle")
                                             .foregroundColor(Color.greenColor)
@@ -133,6 +139,6 @@ struct TaskView: View {
 struct TaskView_Previews: PreviewProvider {
     static var previews: some View {
         TaskView()
-            .environmentObject(DataManager())
+            .environmentObject(TaskManagerModel())
     }
 }

@@ -9,6 +9,10 @@ import SwiftUI
 
 struct WidgetComponentView: View {
     @EnvironmentObject private var taskManager: TaskManagerModel
+    
+    // MARK: Environment Values
+    @Environment(\.self) var env
+    
     @FetchRequest(sortDescriptors: []) private var tasksItems: FetchedResults<TaskData>
     @State private var progress: CGFloat = 0.0
 
@@ -24,7 +28,7 @@ struct WidgetComponentView: View {
                             .font(Font.system(size: 14))
                             .foregroundColor(Color.white)
                     }
-                    Text("\(taskManager.completedTasksCount)")
+                    Text("\(taskManager.completedTaskCount)")
                         .boldFont_32()
                         .foregroundColor(Color.white)
                         .padding(.top, -8)
@@ -39,7 +43,7 @@ struct WidgetComponentView: View {
                                 .font(Font.system(size: 14))
                                 .foregroundColor(Color.white)
                         }
-                        Text("\(taskManager.completedTasksCount)/\(tasksItems.count)")
+                        Text("\(taskManager.completedTaskCount)/\(tasksItems.count)")
                             .boldFont_18()
                             .foregroundColor(Color.white)
                             .padding(.top, -8)
@@ -50,7 +54,7 @@ struct WidgetComponentView: View {
                             RoundedRectangle(cornerRadius: 2)
                                 .fill(Color.blueColor)
                                 .frame(width: 8, height: 8)
-                            Text(taskManager.titleTarget)
+                            Text("Goal")
                                 .font(Font.system(size: 14))
                                 .foregroundColor(Color.white)
                         }
@@ -72,7 +76,7 @@ struct WidgetComponentView: View {
                     .onAppear {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                             withAnimation {
-                                progress = taskManager.completionPercentage
+                              // progress = taskManager.completedCount
                             }
                         }
                     }
@@ -86,7 +90,6 @@ struct WidgetComponentView: View {
             RoundedRectangle(cornerRadius: .cornerRadius, style: .continuous)
                 .fill(Color.darkColor)
         )
-        
     }
 }
 

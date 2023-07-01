@@ -25,7 +25,7 @@ struct WidgetDetailView: View {
                         LazyVGrid(columns: twoColumnGrid, spacing: 6) {
                             ActivityBlock(color: .greenColor, title: "All Task", count: tasksItems.count)
                             
-                            ActivityBlock(color: .blueColor, title: "Completed Task", count: taskManager.completedTasksCount)
+                            ActivityBlock(color: .blueColor, title: "Completed Task", count: taskManager.completedTaskCount)
                         }
                         .padding(.bottom, 16)
                         

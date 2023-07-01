@@ -35,47 +35,59 @@ struct TaskProgress: Identifiable {
 }
 
 
-class TaskManagerModel: NSObject, ObservableObject, Identifiable {
-    @Published var titleTask: String = ""
+class TaskManagerModel: ObservableObject, Identifiable {
+    
+    // MARK: New Task Properties
+    @Published var taskTitle: String = ""
     @Published var isDone: Bool = false
     @Published var tasksItems: [Task] = []
     
-    @Published var titleTarget: String = "Goal"
+    @Published var completedTaskCount: Int = 0
     @Published var targetCount: Int = 3 
     @Published var savedTargetCount: Int = 3
     
-    func addTask(context: NSManagedObjectContext) {
-        let newTask = TaskData(context: context)
-        newTask.titleTask = titleTask
+    // MARK: Adding Task To Core Data
+    func addTask(context: NSManagedObjectContext) -> Bool {
+        var newTask: TaskData!
+        newTask = TaskData(context: context)
+        newTask.titleTask = taskTitle
+        newTask.isDone = false
         try? context.save()
         
-        let task = Task(titleTask: titleTask) // Create a new task
-        tasksItems.append(task) // Add the new task to the array
-        titleTask = "" // Clear the titleTask after adding the task
+        if let _ = try? context.save() {
+            return true
+        }
+        return false
     }
 
     func deleteTask(task: TaskData, context: NSManagedObjectContext) {
         context.delete(task)
         try? context.save()
+        updateCompletedCount()
     }
 
     func toggleTaskDone(task: TaskData, context: NSManagedObjectContext) {
         task.isDone.toggle()
         if task.isDone {
-            savedTargetCount += 1 // Increment the saved target count
-            task.completedCount += 1 // Increment the completed count of the task
+            task.completedTaskCount += 1
         } else {
-            savedTargetCount -= 1 // Decrement the saved target count
-            task.completedCount -= 1 // Decrement the completed count of the task
+            task.completedTaskCount -= 1
         }
+        
         try? context.save()
+        updateCompletedCount()
+    }
+
+    // Функция для обновления completedCount при изменении состояния задачи
+    func updateCompletedCount() {
+        completedTaskCount = tasksItems.filter { $0.isDone }.count
     }
     
-    
-    var completedTasksCount: Int {
+    func countCompletedTasks() -> Int {
         return tasksItems.filter { $0.isDone }.count
     }
     
+
     @Published var achievements: [Achievement] = [
         Achievement(
             title: "Beginner",
@@ -159,15 +171,15 @@ class TaskManagerModel: NSObject, ObservableObject, Identifiable {
         }
     }
     
-    // функция обновляет прогресс выполнения задачи для указанного дня, основываясь на значении completedTasksCount.
-    func updateTaskProgress(forDay day: String) {
-        if let progress = taskProgress[day] {
-            var updatedProgress = progress
-            updatedProgress.completedCount = completedTasksCount
-            taskProgress[day] = updatedProgress
-        }
-    }
-    
+//    // функция обновляет прогресс выполнения задачи для указанного дня, основываясь на значении completedTasksCount.
+//    func updateTaskProgress(forDay day: String) {
+//        if let progress = taskProgress[day] {
+//            var updatedProgress = progress
+//            updatedProgress.completedCount = completedTasksCount
+//            taskProgress[day] = updatedProgress
+//        }
+//    }
+//
     private var achievementTargets: [String: Int] = [
         "Default": 0,
         "Beginner": 1,
@@ -178,73 +190,48 @@ class TaskManagerModel: NSObject, ObservableObject, Identifiable {
         "Jedi": 7
     ]
     
-    var totalTasksCount: Int {
-        tasksItems.count
-    }
     
-
-    
-//    func addTask(title: String) {
-//        let newTask = Task(titleTask: title)
-//        tasksItems.append(newTask)
-//    }
+//    func toggleTaskDone(_ task: Task) {
+//        for (index, currentTask) in tasksItems.enumerated() {
+//            if currentTask.id == task.id {
+//                tasksItems[index].isDone.toggle()
 //
-//    func deleteTask(_ task: TaskManagerModel) {
-//        var indexToRemove: Int?
-//        for (index, existingTask) in tasksItems.enumerated() {
-//            if existingTask.id == task.id {
-//                indexToRemove = index
+//                let completedCount = completedTasksCount
+//                let target = targetCount
+//
+//                if completedCount == target {
+//                    // Проверяем, есть ли разблокированные достижения
+//                    let unlockedAchievements = achievements.filter { achievement in
+//                        let isUnlocked = achievementStatus[achievement.id] ?? false
+//                        let achievementTarget = achievementTargets[achievement.title] ?? 0
+//                        return !isUnlocked && achievementTarget == target
+//                    }
+//
+//                    // Разблокируем достижия, соответствующие установленной цели
+//                    for unlockedAchievement in unlockedAchievements {
+//                        achievementStatus[unlockedAchievement.id] = true
+//                        print("Achievement unlocked: \(unlockedAchievement.title)")
+//                    }
+//                }
 //                break
 //            }
 //        }
-//        if let index = indexToRemove {
-//            tasksItems.remove(at: index)
-//        }
-//    }
-
-    
-    func toggleTaskDone(_ task: Task) {
-        for (index, currentTask) in tasksItems.enumerated() {
-            if currentTask.id == task.id {
-                tasksItems[index].isDone.toggle()
-                
-                let completedCount = completedTasksCount
-                let target = targetCount
-                
-                if completedCount == target {
-                    // Проверяем, есть ли разблокированные достижения
-                    let unlockedAchievements = achievements.filter { achievement in
-                        let isUnlocked = achievementStatus[achievement.id] ?? false
-                        let achievementTarget = achievementTargets[achievement.title] ?? 0
-                        return !isUnlocked && achievementTarget == target
-                    }
-                    
-                    // Разблокируем достижия, соответствующие установленной цели
-                    for unlockedAchievement in unlockedAchievements {
-                        achievementStatus[unlockedAchievement.id] = true
-                        print("Achievement unlocked: \(unlockedAchievement.title)")
-                    }
-                }
-                break
-            }
-        }
-        // После завершения цикла обновляем isUnlocked в объектах достижений
-        for (index, achievement) in achievements.enumerated() {
-            let achievementTarget = achievementTargets[achievement.title] ?? 0
-            let isUnlocked = achievementStatus[achievement.id] ?? false || completedTasksCount >= achievementTarget
-            achievements[index].isUnlocked = isUnlocked
-        }
-        
 //        // После завершения цикла обновляем isUnlocked в объектах достижений
 //        for (index, achievement) in achievements.enumerated() {
 //            let achievementTarget = achievementTargets[achievement.title] ?? 0
-//            let isUnlocked = achievementStatus[achievement.id] ?? false || (completedTasksCount >= achievementTarget && achievementTarget == targetCount)
+//            let isUnlocked = achievementStatus[achievement.id] ?? false || completedTasksCount >= achievementTarget
 //            achievements[index].isUnlocked = isUnlocked
 //        }
+//
+////        // После завершения цикла обновляем isUnlocked в объектах достижений
+////        for (index, achievement) in achievements.enumerated() {
+////            let achievementTarget = achievementTargets[achievement.title] ?? 0
+////            let isUnlocked = achievementStatus[achievement.id] ?? false || (completedTasksCount >= achievementTarget && achievementTarget == targetCount)
+////            achievements[index].isUnlocked = isUnlocked
+////        }
+//
+//    }
 
-    }
-
-    // Логика изменение цели
     func increment() {
         targetCount += 1
     }
@@ -253,33 +240,15 @@ class TaskManagerModel: NSObject, ObservableObject, Identifiable {
         targetCount -= 1
     }
 
-    var completionPercentage: Double {
-        let completedCount = Double(completedTasksCount)
-        let target = Double(targetCount)
-        
-        if target == 0 {
-            return 0.0
-        } else {
-            return completedCount / target
-        }
-    }
-    
-    // Статистика всех задач 
-    var totalCompletedTasksCount: Int {
-          var count = 0
-          for task in tasksItems {
-              if task.isDone {
-                  count += 1
-              }
-          }
-          return count
-      }
-    
-    // Дата
-    func currentDateWithDayFormatted() -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "EEEE, dd/MM/yyyy"
-        return dateFormatter.string(from: Date())
-    }
+//    var completionPercentage: Double {
+//        let completedCount = Double(completedTasksCount)
+//        let target = Double(targetCount)
+//        
+//        if target == 0 {
+//            return 0.0
+//        } else {
+//            return completedCount / target
+//        }
+//    }
     
 }

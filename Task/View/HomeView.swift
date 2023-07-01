@@ -25,7 +25,7 @@ struct HomeView: View {
                 ScrollView {
                     NavigationLink(destination: WidgetDetailView()) {
                         VStack(alignment: .leading) {
-                            Text(taskManager.currentDateWithDayFormatted())
+                            Text(currentDateWithDayFormatted())
                                 .mediumFont_14()
                                 .foregroundColor(Color.white)
                                 .opacity(0.5)
@@ -200,6 +200,14 @@ struct HomeView: View {
             }
         }
     }
+    
+    // Дата
+    func currentDateWithDayFormatted() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "EEEE, dd/MM/yyyy"
+        return dateFormatter.string(from: Date())
+    }
+
 }
 
 
