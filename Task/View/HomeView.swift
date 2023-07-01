@@ -150,7 +150,7 @@ struct HomeView: View {
                             .foregroundColor(Color.white)
                             .padding(.vertical, 4)
                         
-                        Text(achievement.description)
+                        Text(achievement.achivmentDescription)
                             .boldFont_18()
                             .foregroundColor(.white)
                             .padding(.vertical, 6)

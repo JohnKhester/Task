@@ -12,6 +12,7 @@ import SwiftUI
 
 struct WidgetDetailView: View {
     @EnvironmentObject private var taskManager: TaskManagerModel
+    @FetchRequest(sortDescriptors: []) private var tasksItems: FetchedResults<TaskData>
     
     var twoColumnGrid = [GridItem(.flexible(), spacing: 16), GridItem(.flexible(), spacing: 6)]
     
@@ -22,7 +23,7 @@ struct WidgetDetailView: View {
                 ScrollView {
                     VStack(alignment: .leading) {
                         LazyVGrid(columns: twoColumnGrid, spacing: 6) {
-                            ActivityBlock(color: .greenColor, title: "All Task", count: taskManager.totalTasksCount)
+                            ActivityBlock(color: .greenColor, title: "All Task", count: tasksItems.count)
                             
                             ActivityBlock(color: .blueColor, title: "Completed Task", count: taskManager.completedTasksCount)
                         }

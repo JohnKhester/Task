@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		1701D4902A4787FC00131D3B /* ActivityBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1701D48F2A4787FC00131D3B /* ActivityBlock.swift */; };
+		1701D4A12A4E35D300131D3B /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1701D49F2A4E35D300131D3B /* DataModel.xcdatamodeld */; };
+		1701D4A32A4E36BA00131D3B /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1701D4A22A4E36BA00131D3B /* DataManager.swift */; };
 		170AC2B22A42EFC700DBB340 /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170AC2B12A42EFC700DBB340 /* Activity.swift */; };
 		170AC2B42A42F52F00DBB340 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170AC2B32A42F52F00DBB340 /* Settings.swift */; };
 		170AC2B82A42FA9A00DBB340 /* ArchiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170AC2B72A42FA9A00DBB340 /* ArchiveView.swift */; };
@@ -25,7 +27,6 @@
 		171ECA9C2A41E00D00EF3EFE /* CounterTargetComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171ECA9B2A41E00D00EF3EFE /* CounterTargetComponents.swift */; };
 		171ECA9E2A41E8CB00EF3EFE /* CircularCharView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171ECA9D2A41E8CB00EF3EFE /* CircularCharView.swift */; };
 		171ECAA02A41EB5000EF3EFE /* WidgetComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171ECA9F2A41EB5000EF3EFE /* WidgetComponentView.swift */; };
-		171ECAA22A41EDBD00EF3EFE /* WidgetDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171ECAA12A41EDBD00EF3EFE /* WidgetDataModel.swift */; };
 		17EF442C2A4478A000104354 /* StatisticView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17EF442B2A4478A000104354 /* StatisticView.swift */; };
 		17EF44322A44B6F200104354 /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17EF44312A44B6F200104354 /* BlurView.swift */; };
 		17EF44342A44BC0000104354 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17EF44332A44BC0000104354 /* Constants.swift */; };
@@ -35,6 +36,8 @@
 
 /* Begin PBXFileReference section */
 		1701D48F2A4787FC00131D3B /* ActivityBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityBlock.swift; sourceTree = "<group>"; };
+		1701D4A02A4E35D300131D3B /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
+		1701D4A22A4E36BA00131D3B /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		170AC2B12A42EFC700DBB340 /* Activity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Activity.swift; sourceTree = "<group>"; };
 		170AC2B32A42F52F00DBB340 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		170AC2B72A42FA9A00DBB340 /* ArchiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveView.swift; sourceTree = "<group>"; };
@@ -53,7 +56,6 @@
 		171ECA9B2A41E00D00EF3EFE /* CounterTargetComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CounterTargetComponents.swift; sourceTree = "<group>"; };
 		171ECA9D2A41E8CB00EF3EFE /* CircularCharView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularCharView.swift; sourceTree = "<group>"; };
 		171ECA9F2A41EB5000EF3EFE /* WidgetComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetComponentView.swift; sourceTree = "<group>"; };
-		171ECAA12A41EDBD00EF3EFE /* WidgetDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetDataModel.swift; sourceTree = "<group>"; };
 		17EF442B2A4478A000104354 /* StatisticView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticView.swift; sourceTree = "<group>"; };
 		17EF44312A44B6F200104354 /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
 		17EF44332A44BC0000104354 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -72,6 +74,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1701D4912A49D17000131D3B /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				1701D49F2A4E35D300131D3B /* DataModel.xcdatamodeld */,
+				1701D4A22A4E36BA00131D3B /* DataManager.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
 		171ECA722A41140500EF3EFE = {
 			isa = PBXGroup;
 			children = (
@@ -91,6 +102,7 @@
 		171ECA7D2A41140500EF3EFE /* Task */ = {
 			isa = PBXGroup;
 			children = (
+				1701D4912A49D17000131D3B /* Data */,
 				171ECA8D2A41C57800EF3EFE /* Model */,
 				171ECA8C2A41C56300EF3EFE /* View */,
 				171ECA942A41DB0400EF3EFE /* Components */,
@@ -129,7 +141,6 @@
 		171ECA8D2A41C57800EF3EFE /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				171ECAA12A41EDBD00EF3EFE /* WidgetDataModel.swift */,
 				170AC2BB2A4312FD00DBB340 /* TaskManagerModel.swift */,
 			);
 			path = Model;
@@ -242,16 +253,17 @@
 				170AC2BC2A4312FD00DBB340 /* TaskManagerModel.swift in Sources */,
 				170AC2BE2A435D8D00DBB340 /* AchievementComponentView.swift in Sources */,
 				170AC2B42A42F52F00DBB340 /* Settings.swift in Sources */,
+				1701D4A32A4E36BA00131D3B /* DataManager.swift in Sources */,
 				171ECA932A41DAF100EF3EFE /* TodayComponentView.swift in Sources */,
 				171ECA982A41DCBD00EF3EFE /* ChangeTargetButtonView.swift in Sources */,
 				17EF44362A44ECE400104354 /* ColorExtension.swift in Sources */,
 				170AC2BA2A43035B00DBB340 /* TaskView.swift in Sources */,
 				170AC2B82A42FA9A00DBB340 /* ArchiveView.swift in Sources */,
 				171ECA9E2A41E8CB00EF3EFE /* CircularCharView.swift in Sources */,
+				1701D4A12A4E35D300131D3B /* DataModel.xcdatamodeld in Sources */,
 				170AC2B22A42EFC700DBB340 /* Activity.swift in Sources */,
 				17EF442C2A4478A000104354 /* StatisticView.swift in Sources */,
 				17EF44342A44BC0000104354 /* Constants.swift in Sources */,
-				171ECAA22A41EDBD00EF3EFE /* WidgetDataModel.swift in Sources */,
 				171ECAA02A41EB5000EF3EFE /* WidgetComponentView.swift in Sources */,
 				171ECA9C2A41E00D00EF3EFE /* CounterTargetComponents.swift in Sources */,
 				17EF44392A44F48300104354 /* DemoView.swift in Sources */,
@@ -393,8 +405,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -422,8 +433,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -459,6 +469,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		1701D49F2A4E35D300131D3B /* DataModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				1701D4A02A4E35D300131D3B /* DataModel.xcdatamodel */,
+			);
+			currentVersion = 1701D4A02A4E35D300131D3B /* DataModel.xcdatamodel */;
+			path = DataModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 171ECA732A41140500EF3EFE /* Project object */;
 }

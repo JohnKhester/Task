@@ -7,11 +7,11 @@
 
 import Foundation
 import SwiftUI
-import Combine
+import CoreData
 
 struct Task: Identifiable {
     let id = UUID()
-    var title: String
+    var titleTask: String
     var isDone: Bool = false
 }
 
@@ -21,7 +21,7 @@ struct Achievement: Identifiable {
     let date: String
     let image: String
     let colorImage: String
-    let description: String
+    let achivmentDescription: String
     let isLockedDescription: String
     let isUnLockedDecription: String
     var isUnlocked: Bool = false
@@ -35,19 +35,54 @@ struct TaskProgress: Identifiable {
 }
 
 
-class TaskManagerModel: ObservableObject {
-    @Published var tasks: [Task] = []
+class TaskManagerModel: NSObject, ObservableObject, Identifiable {
+    @Published var titleTask: String = ""
+    @Published var isDone: Bool = false
+    @Published var tasksItems: [Task] = []
+    
     @Published var titleTarget: String = "Goal"
     @Published var targetCount: Int = 3 
     @Published var savedTargetCount: Int = 3
+    
+    func addTask(context: NSManagedObjectContext) {
+        let newTask = TaskData(context: context)
+        newTask.titleTask = titleTask
+        try? context.save()
+        
+        let task = Task(titleTask: titleTask) // Create a new task
+        tasksItems.append(task) // Add the new task to the array
+        titleTask = "" // Clear the titleTask after adding the task
+    }
 
+    func deleteTask(task: TaskData, context: NSManagedObjectContext) {
+        context.delete(task)
+        try? context.save()
+    }
+
+    func toggleTaskDone(task: TaskData, context: NSManagedObjectContext) {
+        task.isDone.toggle()
+        if task.isDone {
+            savedTargetCount += 1 // Increment the saved target count
+            task.completedCount += 1 // Increment the completed count of the task
+        } else {
+            savedTargetCount -= 1 // Decrement the saved target count
+            task.completedCount -= 1 // Decrement the completed count of the task
+        }
+        try? context.save()
+    }
+    
+    
+    var completedTasksCount: Int {
+        return tasksItems.filter { $0.isDone }.count
+    }
+    
     @Published var achievements: [Achievement] = [
         Achievement(
             title: "Beginner",
             date: "1/08/2023",
             image: "1",
             colorImage: "colorful_1",
-            description: "10 Tasks",
+            achivmentDescription: "10 Tasks",
             isLockedDescription: "Close your first 10 tasks and start your journey towards achieving your goals.",
             isUnLockedDecription:"You have closed your first 10 tasks and started your journey towards achieving your goals."),
         
@@ -56,7 +91,7 @@ class TaskManagerModel: ObservableObject {
             date: "2/08/2023",
             image: "2",
             colorImage: "colorful_2",
-            description: "25 Tasks",
+            achivmentDescription: "25 Tasks",
             isLockedDescription: "Close 25 tasks to unlock and keep moving forward.",
             isUnLockedDecription: "You have closed 25 tasks and continue to move forward."),
         
@@ -65,7 +100,7 @@ class TaskManagerModel: ObservableObject {
             date: "3/08/2023",
             image: "3",
             colorImage: "colorful_3",
-            description: "70 Tasks",
+            achivmentDescription: "70 Tasks",
             isLockedDescription: "Close 70 tasks and strive towards achieving your goals.",
             isUnLockedDecription: "You have closed 70 tasks, demonstrating your perseverance and constant goal pursuit"),
         
@@ -74,7 +109,7 @@ class TaskManagerModel: ObservableObject {
             date: "3/08/2023",
             image: "4",
             colorImage: "colorful_4",
-            description: "100 Tasks",
+            achivmentDescription: "100 Tasks",
             isLockedDescription: "Close 100 tasks and continue confidently towards your goals.",
             isUnLockedDecription: "You have closed 100 tasks and continue confidently towards your goals. Your perseverance and dedication are admirable!"),
         
@@ -83,7 +118,7 @@ class TaskManagerModel: ObservableObject {
             date: "3/08/2023",
             image: "5",
             colorImage: "colorful_5",
-            description: "125 Tasks",
+            achivmentDescription: "125 Tasks",
             isLockedDescription: "Close 120 tasks and keep conquering new heights",
             isUnLockedDecription: "You have closed 125 tasks and continue to conquer new heights. Your persistent effort and self-discipline are impressive!"),
         
@@ -92,7 +127,7 @@ class TaskManagerModel: ObservableObject {
             date: "3/08/2023",
             image: "6",
             colorImage: "colorful_6",
-            description: "150 Tasks",
+            achivmentDescription: "150 Tasks",
             isLockedDescription: "Close 150 tasks and continue confidently towards your goals.",
             isUnLockedDecription: "You have closed 150 tasks. Your consistency and willpower serve as an example to other AchievoTasks users"),
         //Achievement(title: "Default", date: "", image: "default", colorImage: "colorful_default")
@@ -144,42 +179,34 @@ class TaskManagerModel: ObservableObject {
     ]
     
     var totalTasksCount: Int {
-        tasks.count
+        tasksItems.count
     }
-    var completedTasksCount: Int {
-        var count = 0
-        for task in tasks {
-            if task.isDone {
-                count += 1
-            }
-        }
-        return count
-    }
+    
 
     
-    func addTask(title: String) {
-        let newTask = Task(title: title)
-        tasks.append(newTask)
-    }
-    
-    func deleteTask(_ task: Task) {
-        var indexToRemove: Int?
-        for (index, existingTask) in tasks.enumerated() {
-            if existingTask.id == task.id {
-                indexToRemove = index
-                break
-            }
-        }
-        if let index = indexToRemove {
-            tasks.remove(at: index)
-        }
-    }
+//    func addTask(title: String) {
+//        let newTask = Task(titleTask: title)
+//        tasksItems.append(newTask)
+//    }
+//
+//    func deleteTask(_ task: TaskManagerModel) {
+//        var indexToRemove: Int?
+//        for (index, existingTask) in tasksItems.enumerated() {
+//            if existingTask.id == task.id {
+//                indexToRemove = index
+//                break
+//            }
+//        }
+//        if let index = indexToRemove {
+//            tasksItems.remove(at: index)
+//        }
+//    }
 
     
     func toggleTaskDone(_ task: Task) {
-        for (index, currentTask) in tasks.enumerated() {
+        for (index, currentTask) in tasksItems.enumerated() {
             if currentTask.id == task.id {
-                tasks[index].isDone.toggle()
+                tasksItems[index].isDone.toggle()
                 
                 let completedCount = completedTasksCount
                 let target = targetCount
@@ -240,7 +267,7 @@ class TaskManagerModel: ObservableObject {
     // Статистика всех задач 
     var totalCompletedTasksCount: Int {
           var count = 0
-          for task in tasks {
+          for task in tasksItems {
               if task.isDone {
                   count += 1
               }
@@ -254,5 +281,5 @@ class TaskManagerModel: ObservableObject {
         dateFormatter.dateFormat = "EEEE, dd/MM/yyyy"
         return dateFormatter.string(from: Date())
     }
-
+    
 }

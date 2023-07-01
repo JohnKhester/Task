@@ -48,7 +48,7 @@ struct AchievementComponentView_Previews: PreviewProvider {
             date: "1/08/2023",
             image: "1",
             colorImage: "colorful_1",
-            description: "Заработайте первые 10 AchievoPoints",
+            achivmentDescription: "Заработайте первые 10 AchievoPoints",
             isLockedDescription:"Закройте свои первые 10 задач и начни свой путь к достижению целей.",
             isUnLockedDecription: "Вы закрыли свои первые 10 задач и начали свой путь к достижению целей. Поздравляем с первым шагом!")
         AchievementComponentView(achievement: achievement)

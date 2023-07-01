@@ -9,6 +9,12 @@ import SwiftUI
 
 struct TodayComponentView: View {
     @EnvironmentObject private var taskManager: TaskManagerModel
+    @FetchRequest(sortDescriptors: []) private var tasksItems: FetchedResults<TaskData>
+    
+//    var totalTasksCount: Int {
+//        tasksItems.count
+//    }
+//
     var body: some View {
         VStack {
             HStack(alignment: .center, spacing: 14) {
@@ -25,13 +31,12 @@ struct TodayComponentView: View {
                     )
                     .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
 
-                
                 VStack(alignment: .leading) {
                     Text("My All Tasks")
                         .font(.system(size: 14, weight: .medium))
                         .whiteForegroundWithOpacity()
                     
-                    Text("\(taskManager.totalTasksCount)")
+                    Text("\(tasksItems.count)")
                         .boldFont_24()
                         .foregroundColor(Color.white)
                 }
@@ -49,6 +54,7 @@ struct TodayComponentView: View {
         }.padding(.horizontal, 16)
     }
 }
+
 
 struct TodayComponentView_Previews: PreviewProvider {
     static var previews: some View {

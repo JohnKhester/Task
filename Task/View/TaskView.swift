@@ -10,21 +10,12 @@ import SwiftUI
 
 
 struct TaskView: View {
-    
-    let gradientColors = [
-        Color(red: 0, green: 0, blue: 0.4),
-        Color(red: 0, green: 0, blue: 0.5),
-        Color(red: 0, green: 0, blue: 0.6),
-        Color(red: 0, green: 0, blue: 0.7),
-        Color(red: 0, green: 0, blue: 0.8),
-        Color(red: 0, green: 0, blue: 0.9),
-        Color(red: 0, green: 0, blue: 1.0),
-        Color(red: 0, green: 0, blue: 1.1),
-    ]
 
-    
-    @State private var newTaskTitle = ""
-    @EnvironmentObject private var taskManager: TaskManagerModel
+    @ObservedObject var taskModel = TaskManagerModel()
+    @EnvironmentObject var manager: DataManager
+    @FetchRequest(sortDescriptors: []) private var tasksItems: FetchedResults<TaskData>
+    @Environment(\.managedObjectContext) private var context
+
     @State private var isEditing = false
     @State private var isPressed = false
     @State private var text: String = ""
@@ -37,13 +28,13 @@ struct TaskView: View {
                     VStack {
                         ZStack(alignment: .leading) {
                             HStack {
-                          if newTaskTitle.isEmpty && !isPressed {
+                          if taskModel.titleTask.isEmpty && !isPressed {
                                     Text("New Task")
                                     .whiteForegroundWithOpacity()
                                         .padding(.horizontal)
                                 }
                             }
-                            TextField("", text: $newTaskTitle)
+                            TextField("", text: $taskModel.titleTask)
                                 .foregroundColor(.white)
                                 .padding()
                                 .background(Color.white.opacity(0.07))
@@ -56,21 +47,19 @@ struct TaskView: View {
                                 
                         }                        
                         Button(action: {
-                            taskManager.addTask(title: newTaskTitle)
-                            newTaskTitle = ""
-                            isEditing = false
+                            taskModel.addTask(context: context)
                         }) {
                             Text("Done")
-                                .foregroundColor(newTaskTitle.isEmpty ? .gray : .black)
+                                .foregroundColor(taskModel.titleTask.isEmpty ? .gray : .black)
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                         }
                         .padding(14)
                         .background(
                             RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                .fill(newTaskTitle.isEmpty ? Color.gray.opacity(0.2) : Color.greenColor)
+                                .fill(taskModel.titleTask.isEmpty ? Color.gray.opacity(0.2) : Color.greenColor)
                         )
                         .contentShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
-                        .disabled(newTaskTitle.isEmpty)
+                        .disabled(taskModel.titleTask.isEmpty)
                     }
                     HStack {
                         Text("My Tasks")
@@ -79,7 +68,7 @@ struct TaskView: View {
                             .padding(.vertical, 12)
                         Spacer()
                     }
-                    if taskManager.tasks.isEmpty {
+                    if tasksItems.isEmpty {
                         VStack {
                             Text("No Tasks for Today")
                                 .mediumFont_13()
@@ -91,37 +80,37 @@ struct TaskView: View {
                                 .frame(height: 93)
                         }.padding(.top, 80)
                     } else {
-                        ForEach(taskManager.tasks.indices, id: \.self) { index in
-                                VStack {
-                                    HStack {
-                                        Text(taskManager.tasks[index].title)
-                                            .strikethrough(taskManager.tasks[index].isDone, color: .greenColor)
-                                            .foregroundColor(.white)
+                        ForEach(tasksItems) { taskItem in
+                            VStack {
+                                HStack {
+                                    Text(taskItem.titleTask ?? "")
+                                        .strikethrough(taskItem.isDone, color: .greenColor)
+                                        .foregroundColor(.white)
 
-                                        Spacer()
-                                        if isEditing {
-                                            Button(action: {
-                                                taskManager.deleteTask(taskManager.tasks[index])
-                                            }) {
-                                                Image(systemName: "trash")
-                                                    .foregroundColor(.red)
-                                            }
-                                            .buttonStyle(BorderlessButtonStyle())
-                                        }
-                                        
+                                    Spacer()
+                                    if isEditing {
                                         Button(action: {
-                                            taskManager.toggleTaskDone(taskManager.tasks[index])
+                                            taskModel.deleteTask(task: taskItem, context: context)
                                         }) {
-                                            Image(systemName: taskManager.tasks[index].isDone ? "checkmark.circle.fill" : "circle")
-                                                .foregroundColor(Color.greenColor)
+                                            Image(systemName: "trash")
+                                                .foregroundColor(.red)
                                         }
                                         .buttonStyle(BorderlessButtonStyle())
                                     }
+                                    Button(action: {
+                                        taskModel.toggleTaskDone(task: taskItem, context: context)
+                                    }) {
+                                        Image(systemName: taskItem.isDone ? "checkmark.circle.fill" : "circle")
+                                            .foregroundColor(Color.greenColor)
+                                    }
+                                    .buttonStyle(BorderlessButtonStyle())
                                 }
-                                .padding(16)                                
-                                .background(Color.white.opacity(0.07))
-                                .cornerRadius(12)
                             }
+                            .padding(16)
+                            .background(Color.white.opacity(0.07))
+                            .cornerRadius(12)
+                        }
+
                     }
                   
                 }
@@ -144,6 +133,6 @@ struct TaskView: View {
 struct TaskView_Previews: PreviewProvider {
     static var previews: some View {
         TaskView()
-            .environmentObject(TaskManagerModel())
+            .environmentObject(DataManager())
     }
 }

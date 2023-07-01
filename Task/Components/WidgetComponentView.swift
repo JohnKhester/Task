@@ -9,8 +9,9 @@ import SwiftUI
 
 struct WidgetComponentView: View {
     @EnvironmentObject private var taskManager: TaskManagerModel
+    @FetchRequest(sortDescriptors: []) private var tasksItems: FetchedResults<TaskData>
     @State private var progress: CGFloat = 0.0
-    
+
     var body: some View {
         HStack {
             VStack(alignment: .leading) {
@@ -23,7 +24,7 @@ struct WidgetComponentView: View {
                             .font(Font.system(size: 14))
                             .foregroundColor(Color.white)
                     }
-                    Text("\(taskManager.totalCompletedTasksCount)")
+                    Text("\(taskManager.completedTasksCount)")
                         .boldFont_32()
                         .foregroundColor(Color.white)
                         .padding(.top, -8)
@@ -38,7 +39,7 @@ struct WidgetComponentView: View {
                                 .font(Font.system(size: 14))
                                 .foregroundColor(Color.white)
                         }
-                        Text("\(taskManager.completedTasksCount)/\(taskManager.totalTasksCount)")
+                        Text("\(taskManager.completedTasksCount)/\(tasksItems.count)")
                             .boldFont_18()
                             .foregroundColor(Color.white)
                             .padding(.top, -8)
