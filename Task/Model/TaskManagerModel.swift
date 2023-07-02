@@ -13,7 +13,7 @@ struct Achievement: Identifiable {
     let id = UUID()
     let title: String
     let date: String
-    let image: String
+    var image: String
     let colorImage: String
     let achivmentDescription: String
     let isLockedDescription: String
@@ -21,14 +21,7 @@ struct Achievement: Identifiable {
     var isUnlocked: Bool = false
 }
 
-
-struct TaskProgress: Identifiable {
-    let id = UUID()
-    var completedCount: Int = 0
-    var totalCount: Int = 0
-}
-
-
+ 
 class TaskManagerModel: ObservableObject, Identifiable {
     
     @FetchRequest(entity: TaskData.entity(), sortDescriptors: [], predicate: nil, animation: .easeInOut) var tasksArray: FetchedResults<TaskData>
@@ -48,7 +41,10 @@ class TaskManagerModel: ObservableObject, Identifiable {
     init() {
         let context = PersistenceController.shared.container.viewContext
         loadGoalCount(context: context)
+        loadAchievementStatus(context: context) // Load achievement status from Core Data
     }
+
+    
     // MARK: Save Target Count To Core Data
     func saveGoalCount(context: NSManagedObjectContext) {
         if let targetData = fetchTargetData(context: context) {
@@ -64,6 +60,7 @@ class TaskManagerModel: ObservableObject, Identifiable {
             print("Error saving context: \(error.localizedDescription)")
         }
     }
+    
     // MARK: Load Saved Value Target Core Data
     func loadGoalCount(context: NSManagedObjectContext) {
         if let targetData = fetchTargetData(context: context) {
@@ -72,7 +69,8 @@ class TaskManagerModel: ObservableObject, Identifiable {
             goalCount = 0
         }
     }
-    // Получение объекта TargetData
+
+    // MARK: Getting Object Of TargetData
     private func fetchTargetData(context: NSManagedObjectContext) -> TargetData? {
         let fetchRequest: NSFetchRequest<TargetData> = TargetData.fetchRequest()
 
@@ -93,28 +91,36 @@ class TaskManagerModel: ObservableObject, Identifiable {
         newTask.deadline = taskDeadline
         newTask.id = UUID()
         newTask.isDone = false
-        try? context.save()
         context.refreshAllObjects()
+        
         if let _ = try? context.save() {
             return true
         }
         return false
     }
+
     
     // MARK: Delete Task To Core Data
     func deleteTask(task: TaskData, context: NSManagedObjectContext) {
         context.delete(task)
         try? context.save()
-       
     }
 
     // MARK: Completed Task To Core Data
     func toggleTaskDone(task: TaskData, context: NSManagedObjectContext) {
         task.isDone.toggle()
         try? context.save()
+        
+        if task.isDone {
+            completedTaskCount += 1
+            var achievement = achievements[completedTaskCount - 1]
+            achievement.isUnlocked = true
+            saveAchievementStatus(achievement: achievement, context: context)
+        }
     }
-    
-    
+
+
+    // MARK: Achievement List
     @Published var achievements: [Achievement] = [
         Achievement(
             title: "Beginner",
@@ -123,8 +129,9 @@ class TaskManagerModel: ObservableObject, Identifiable {
             colorImage: "colorful_1",
             achivmentDescription: "10 Tasks",
             isLockedDescription: "Close your first 10 tasks and start your journey towards achieving your goals.",
-            isUnLockedDecription:"You have closed your first 10 tasks and started your journey towards achieving your goals."),
-        
+            isUnLockedDecription:"You have closed your first 10 tasks and started your journey towards achieving your goals.",
+            isUnlocked: false),
+                    
         Achievement(
             title: "Active",
             date: "2/08/2023",
@@ -132,7 +139,8 @@ class TaskManagerModel: ObservableObject, Identifiable {
             colorImage: "colorful_2",
             achivmentDescription: "25 Tasks",
             isLockedDescription: "Close 25 tasks to unlock and keep moving forward.",
-            isUnLockedDecription: "You have closed 25 tasks and continue to move forward."),
+            isUnLockedDecription: "You have closed 25 tasks and continue to move forward.",
+            isUnlocked: false),
         
         Achievement(
             title: "Scout",
@@ -141,7 +149,8 @@ class TaskManagerModel: ObservableObject, Identifiable {
             colorImage: "colorful_3",
             achivmentDescription: "70 Tasks",
             isLockedDescription: "Close 70 tasks and strive towards achieving your goals.",
-            isUnLockedDecription: "You have closed 70 tasks, demonstrating your perseverance and constant goal pursuit"),
+            isUnLockedDecription: "You have closed 70 tasks, demonstrating your perseverance and constant goal pursuit",
+            isUnlocked: false),
         
         Achievement(
             title: "Seeker",
@@ -150,7 +159,8 @@ class TaskManagerModel: ObservableObject, Identifiable {
             colorImage: "colorful_4",
             achivmentDescription: "100 Tasks",
             isLockedDescription: "Close 100 tasks and continue confidently towards your goals.",
-            isUnLockedDecription: "You have closed 100 tasks and continue confidently towards your goals. Your perseverance and dedication are admirable!"),
+            isUnLockedDecription: "You have closed 100 tasks and continue confidently towards your goals. Your perseverance and dedication are admirable!",
+            isUnlocked: false),
         
         Achievement(
             title: "Dweller",
@@ -159,7 +169,8 @@ class TaskManagerModel: ObservableObject, Identifiable {
             colorImage: "colorful_5",
             achivmentDescription: "125 Tasks",
             isLockedDescription: "Close 120 tasks and keep conquering new heights",
-            isUnLockedDecription: "You have closed 125 tasks and continue to conquer new heights. Your persistent effort and self-discipline are impressive!"),
+            isUnLockedDecription: "You have closed 125 tasks and continue to conquer new heights. Your persistent effort and self-discipline are impressive!",
+            isUnlocked: false),
         
         Achievement(
             title: "Jedi",
@@ -168,44 +179,9 @@ class TaskManagerModel: ObservableObject, Identifiable {
             colorImage: "colorful_6",
             achivmentDescription: "150 Tasks",
             isLockedDescription: "Close 150 tasks and continue confidently towards your goals.",
-            isUnLockedDecription: "You have closed 150 tasks. Your consistency and willpower serve as an example to other AchievoTasks users"),
-        //Achievement(title: "Default", date: "", image: "default", colorImage: "colorful_default")
+            isUnLockedDecription: "You have closed 150 tasks. Your consistency and willpower serve as an example to other AchievoTasks users",
+            isUnlocked: false),
     ]
-
-    
-    // Добавляем словарь для хранения статуса разблокировки каждого достижения
-    @Published var achievementStatus: [UUID: Bool] = [:]
-    
-    @Published var taskProgress: [String: TaskProgress] = [
-        "M": TaskProgress(completedCount: 0, totalCount: 0),
-        "Tu": TaskProgress(completedCount: 0, totalCount: 0),
-        "W": TaskProgress(completedCount: 0, totalCount: 0),
-        "Th": TaskProgress(completedCount: 0, totalCount: 0),
-        "F": TaskProgress(completedCount: 0, totalCount: 0),
-        "Sa": TaskProgress(completedCount: 0, totalCount: 0),
-        "Su": TaskProgress(completedCount: 0, totalCount: 0)
-    ]
-
-
-//    // Вычисление общего прогресса выполнения задач для всех дней
-//    var overallProgress: Double {
-//        let totalCompletedCount = taskProgress.values.reduce(0) { $0 + $1.completedCount }
-//        let totalTaskCount = taskProgress.values.reduce(0) { $0 + $1.totalCount }
-//        if totalTaskCount == 0 {
-//            return 0.0
-//        } else {
-//            return Double(totalCompletedCount) / Double(totalTaskCount)
-//        }
-//    }
-//    
-//    // функция обновляет прогресс выполнения задачи для указанного дня, основываясь на значении completedTasksCount.
-//    func updateTaskProgress(forDay day: String) {
-//        if let progress = taskProgress[day] {
-//            var updatedProgress = progress
-//            updatedProgress.completedCount = completedTasksCount
-//            taskProgress[day] = updatedProgress
-//        }
-//    }
 
     private var achievementTargets: [String: Int] = [
         "Default": 0,
@@ -218,46 +194,75 @@ class TaskManagerModel: ObservableObject, Identifiable {
     ]
     
     
-//    func toggleTaskDone(_ task: Task) {
-//        for (index, currentTask) in tasksItems.enumerated() {
-//            if currentTask.id == task.id {
-//                tasksItems[index].isDone.toggle()
-//
-//                let completedCount = completedTasksCount
-//                let target = targetCount
-//
-//                if completedCount == target {
-//                    // Проверяем, есть ли разблокированные достижения
-//                    let unlockedAchievements = achievements.filter { achievement in
-//                        let isUnlocked = achievementStatus[achievement.id] ?? false
-//                        let achievementTarget = achievementTargets[achievement.title] ?? 0
-//                        return !isUnlocked && achievementTarget == target
-//                    }
-//
-//                    // Разблокируем достижия, соответствующие установленной цели
-//                    for unlockedAchievement in unlockedAchievements {
-//                        achievementStatus[unlockedAchievement.id] = true
-//                        print("Achievement unlocked: \(unlockedAchievement.title)")
-//                    }
-//                }
-//                break
-//            }
-//        }
-//        // После завершения цикла обновляем isUnlocked в объектах достижений
-//        for (index, achievement) in achievements.enumerated() {
-//            let achievementTarget = achievementTargets[achievement.title] ?? 0
-//            let isUnlocked = achievementStatus[achievement.id] ?? false || completedTasksCount >= achievementTarget
-//            achievements[index].isUnlocked = isUnlocked
-//        }
-//
-////        // После завершения цикла обновляем isUnlocked в объектах достижений
-////        for (index, achievement) in achievements.enumerated() {
-////            let achievementTarget = achievementTargets[achievement.title] ?? 0
-////            let isUnlocked = achievementStatus[achievement.id] ?? false || (completedTasksCount >= achievementTarget && achievementTarget == targetCount)
-////            achievements[index].isUnlocked = isUnlocked
-////        }
-//
-//    }
+    // MARK: Save Achievement Status to CoreData
+    func saveAchievementStatus(achievement: Achievement, context: NSManagedObjectContext) {
+        guard let achievementIndex = achievements.firstIndex(where: { $0.title == achievement.title }) else {
+            return
+        }
+        
+        let isUnlocked = completedTaskCount >= achievementTargets[achievement.title] ?? 0
+        
+        achievements[achievementIndex].isUnlocked = isUnlocked
+        achievements[achievementIndex].image = isUnlocked ? achievements[achievementIndex].colorImage : "default"
+        
+        saveAchievementStatusToCoreData(achievementID: achievements[achievementIndex].id, isUnlocked: isUnlocked, context: context)
+        
+        if isUnlocked {
+            print("Получено достижение: \(achievement.title)")
+        } else {
+            print("Доступное достижение: \(achievement.title)")
+        }
+        
+        do {
+            try context.save()
+        } catch {
+            print("Error saving context: \(error.localizedDescription)")
+        }
+    }
+
+    // MARK: Save Achievement Status to CoreData
+    func saveAchievementStatusToCoreData(achievementID: UUID, isUnlocked: Bool, context: NSManagedObjectContext) {
+        let fetchRequest: NSFetchRequest<AchievementData> = AchievementData.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "id == %@", achievementID as CVarArg)
+        
+        do {
+            let results = try context.fetch(fetchRequest)
+            
+            if let achievementData = results.first {
+                achievementData.isUnlocked = isUnlocked
+            } else {
+                let newAchievementData = AchievementData(context: context)
+                newAchievementData.id = achievementID
+                newAchievementData.isUnlocked = isUnlocked
+            }
+            
+            try context.save()
+        } catch {
+            print("Error saving achievement status to Core Data: \(error.localizedDescription)")
+        }
+    }
+
+    // MARK: Load Achievement Status from CoreData
+    func loadAchievementStatus(context: NSManagedObjectContext) {
+        let fetchRequest: NSFetchRequest<AchievementData> = AchievementData.fetchRequest()
+        
+        do {
+            let results = try context.fetch(fetchRequest)
+            
+            for achievementData in results {
+                if let achievementIndex = achievements.firstIndex(where: { $0.id == achievementData.id }) {
+                    achievements[achievementIndex].isUnlocked = achievementData.isUnlocked
+                    
+                    if achievementData.isUnlocked {
+                        achievements[achievementIndex].image = achievements[achievementIndex].colorImage
+                    }
+                }
+            }
+        } catch {
+            print("Error loading achievement status from Core Data: \(error.localizedDescription)")
+        }
+    }
+
 
     func increment() {
         goalCount += 1

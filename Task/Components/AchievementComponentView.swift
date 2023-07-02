@@ -36,21 +36,21 @@ struct AchievementComponentView: View {
         .padding(10)
         .frame(maxWidth: .infinity)
         .frame(height: 120)
-        .id(achievement.id)
-        // Добавляем идентификатор для обновления представления
+        .id(achievement.id) // Добавляем идентификатор для обновления представления
     }
 }
 
 struct AchievementComponentView_Previews: PreviewProvider {
     static var previews: some View {
         let achievement = Achievement(
-            title: "Новичок",
+            title: "Beginner",
             date: "1/08/2023",
             image: "1",
             colorImage: "colorful_1",
-            achivmentDescription: "Заработайте первые 10 AchievoPoints",
-            isLockedDescription:"Закройте свои первые 10 задач и начни свой путь к достижению целей.",
-            isUnLockedDecription: "Вы закрыли свои первые 10 задач и начали свой путь к достижению целей. Поздравляем с первым шагом!")
+            achivmentDescription: "10 Tasks",
+            isLockedDescription: "Close your first 10 tasks and start your journey towards achieving your goals.",
+            isUnLockedDecription:"You have closed your first 10 tasks and started your journey towards achieving your goals.",
+            isUnlocked: false)
         AchievementComponentView(achievement: achievement)
            .environmentObject(TaskManagerModel())
     }

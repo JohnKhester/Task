@@ -20,6 +20,7 @@ extension TaskData {
     @NSManaged public var isDone: Bool
     @NSManaged public var titleTask: String?
     @NSManaged public var deadline: Date?
+    @NSManaged public var id: UUID?
 
 }
 

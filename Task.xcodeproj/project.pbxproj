@@ -12,7 +12,6 @@
 		1701D4BD2A50AB0F00131D3B /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1701D4BC2A50AB0F00131D3B /* Persistence.swift */; };
 		170AC2B22A42EFC700DBB340 /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170AC2B12A42EFC700DBB340 /* Activity.swift */; };
 		170AC2B42A42F52F00DBB340 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170AC2B32A42F52F00DBB340 /* Settings.swift */; };
-		170AC2B82A42FA9A00DBB340 /* ArchiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170AC2B72A42FA9A00DBB340 /* ArchiveView.swift */; };
 		170AC2BA2A43035B00DBB340 /* TaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170AC2B92A43035B00DBB340 /* TaskView.swift */; };
 		170AC2BC2A4312FD00DBB340 /* TaskManagerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170AC2BB2A4312FD00DBB340 /* TaskManagerModel.swift */; };
 		170AC2BE2A435D8D00DBB340 /* AchievementComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170AC2BD2A435D8D00DBB340 /* AchievementComponentView.swift */; };
@@ -27,7 +26,6 @@
 		171ECA9C2A41E00D00EF3EFE /* CounterTargetComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171ECA9B2A41E00D00EF3EFE /* CounterTargetComponents.swift */; };
 		171ECA9E2A41E8CB00EF3EFE /* CircularCharView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171ECA9D2A41E8CB00EF3EFE /* CircularCharView.swift */; };
 		171ECAA02A41EB5000EF3EFE /* WidgetComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171ECA9F2A41EB5000EF3EFE /* WidgetComponentView.swift */; };
-		17EF442C2A4478A000104354 /* StatisticView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17EF442B2A4478A000104354 /* StatisticView.swift */; };
 		17EF44322A44B6F200104354 /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17EF44312A44B6F200104354 /* BlurView.swift */; };
 		17EF44342A44BC0000104354 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17EF44332A44BC0000104354 /* Constants.swift */; };
 		17EF44362A44ECE400104354 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17EF44352A44ECE400104354 /* ColorExtension.swift */; };
@@ -40,7 +38,6 @@
 		1701D4BC2A50AB0F00131D3B /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		170AC2B12A42EFC700DBB340 /* Activity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Activity.swift; sourceTree = "<group>"; };
 		170AC2B32A42F52F00DBB340 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
-		170AC2B72A42FA9A00DBB340 /* ArchiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveView.swift; sourceTree = "<group>"; };
 		170AC2B92A43035B00DBB340 /* TaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskView.swift; sourceTree = "<group>"; };
 		170AC2BB2A4312FD00DBB340 /* TaskManagerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskManagerModel.swift; sourceTree = "<group>"; };
 		170AC2BD2A435D8D00DBB340 /* AchievementComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementComponentView.swift; sourceTree = "<group>"; };
@@ -56,7 +53,6 @@
 		171ECA9B2A41E00D00EF3EFE /* CounterTargetComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CounterTargetComponents.swift; sourceTree = "<group>"; };
 		171ECA9D2A41E8CB00EF3EFE /* CircularCharView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularCharView.swift; sourceTree = "<group>"; };
 		171ECA9F2A41EB5000EF3EFE /* WidgetComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetComponentView.swift; sourceTree = "<group>"; };
-		17EF442B2A4478A000104354 /* StatisticView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticView.swift; sourceTree = "<group>"; };
 		17EF44312A44B6F200104354 /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
 		17EF44332A44BC0000104354 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		17EF44352A44ECE400104354 /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
@@ -128,12 +124,10 @@
 			children = (
 				170AC2B12A42EFC700DBB340 /* Activity.swift */,
 				171ECA802A41140500EF3EFE /* HomeView.swift */,
-				170AC2B72A42FA9A00DBB340 /* ArchiveView.swift */,
 				171ECA952A41DBA200EF3EFE /* WidgetDetailView.swift */,
 				170AC2B32A42F52F00DBB340 /* Settings.swift */,
 				170AC2B92A43035B00DBB340 /* TaskView.swift */,
 				170AC2BF2A43718E00DBB340 /* AchievementView.swift */,
-				17EF442B2A4478A000104354 /* StatisticView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -258,11 +252,9 @@
 				17EF44362A44ECE400104354 /* ColorExtension.swift in Sources */,
 				1701D4BD2A50AB0F00131D3B /* Persistence.swift in Sources */,
 				170AC2BA2A43035B00DBB340 /* TaskView.swift in Sources */,
-				170AC2B82A42FA9A00DBB340 /* ArchiveView.swift in Sources */,
 				171ECA9E2A41E8CB00EF3EFE /* CircularCharView.swift in Sources */,
 				1701D4A12A4E35D300131D3B /* DataModel.xcdatamodeld in Sources */,
 				170AC2B22A42EFC700DBB340 /* Activity.swift in Sources */,
-				17EF442C2A4478A000104354 /* StatisticView.swift in Sources */,
 				17EF44342A44BC0000104354 /* Constants.swift in Sources */,
 				171ECAA02A41EB5000EF3EFE /* WidgetComponentView.swift in Sources */,
 				171ECA9C2A41E00D00EF3EFE /* CounterTargetComponents.swift in Sources */,
