@@ -12,6 +12,7 @@ import CoreData
 struct Task: Identifiable {
     let id = UUID()
     var titleTask: String
+    var countDoneTask: Int16
     var isDone: Bool = false
 }
 
@@ -37,10 +38,11 @@ struct TaskProgress: Identifiable {
 
 class TaskManagerModel: ObservableObject, Identifiable {
     
+    @FetchRequest(entity: TaskData.entity(), sortDescriptors: [], predicate: nil, animation: .easeInOut) var tasksArray: FetchedResults<TaskData>
+    
     // MARK: New Task Properties
     @Published var taskTitle: String = ""
     @Published var isDone: Bool = false
-    @Published var tasksItems: [Task] = []
     
     @Published var completedTaskCount: Int = 0
     @Published var targetCount: Int = 3 
@@ -59,35 +61,22 @@ class TaskManagerModel: ObservableObject, Identifiable {
         }
         return false
     }
-
+    
+    // MARK: Delete Task To Core Data
     func deleteTask(task: TaskData, context: NSManagedObjectContext) {
         context.delete(task)
         try? context.save()
-        updateCompletedCount()
+       
     }
 
+    // MARK: Completed Task To Core Data
     func toggleTaskDone(task: TaskData, context: NSManagedObjectContext) {
         task.isDone.toggle()
-        if task.isDone {
-            task.completedTaskCount += 1
-        } else {
-            task.completedTaskCount -= 1
-        }
-        
         try? context.save()
-        updateCompletedCount()
-    }
-
-    // Функция для обновления completedCount при изменении состояния задачи
-    func updateCompletedCount() {
-        completedTaskCount = tasksItems.filter { $0.isDone }.count
     }
     
-    func countCompletedTasks() -> Int {
-        return tasksItems.filter { $0.isDone }.count
-    }
     
-
+    
     @Published var achievements: [Achievement] = [
         Achievement(
             title: "Beginner",

@@ -10,12 +10,19 @@ import SwiftUI
 struct WidgetComponentView: View {
     @EnvironmentObject private var taskManager: TaskManagerModel
     
-    // MARK: Environment Values
+    // MARK: All Environment Values in one Variable
     @Environment(\.self) var env
     
-    @FetchRequest(sortDescriptors: []) private var tasksItems: FetchedResults<TaskData>
+    // MARK: Fetching Task
+    @FetchRequest(entity: TaskData.entity(), sortDescriptors: [], predicate: nil, animation: .easeInOut) var tasksArray: FetchedResults<TaskData>
+    
     @State private var progress: CGFloat = 0.0
 
+    // MARK: Fetching Task Done
+    var completedTaskCount: Int {
+          tasksArray.filter { $0.isDone }.count
+      }
+    
     var body: some View {
         HStack {
             VStack(alignment: .leading) {
@@ -43,7 +50,7 @@ struct WidgetComponentView: View {
                                 .font(Font.system(size: 14))
                                 .foregroundColor(Color.white)
                         }
-                        Text("\(taskManager.completedTaskCount)/\(tasksItems.count)")
+                        Text("\(completedTaskCount)/\(tasksArray.count)")
                             .boldFont_18()
                             .foregroundColor(Color.white)
                             .padding(.top, -8)

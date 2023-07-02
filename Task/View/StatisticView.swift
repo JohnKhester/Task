@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-
-
 struct StatisticView: View {
     @EnvironmentObject private var taskManager: TaskManagerModel
     @State private var progress: CGFloat = 0.0

@@ -17,19 +17,22 @@ struct TaskView: View {
     @Environment(\.self) var env
     
     // MARK: Fetching Task
-    @FetchRequest(entity: TaskData.entity(), sortDescriptors: [], predicate: nil, animation: .easeInOut) var tasksItems: FetchedResults<TaskData>
+    @FetchRequest(entity: TaskData.entity(), sortDescriptors: [], predicate: nil, animation: .easeInOut) var tasksArray: FetchedResults<TaskData>
 
     @State private var isEditing = false
     @State private var isPressed = false
-    @State private var text: String = ""
     
+    var completedTaskCount: Int {
+          tasksArray.filter { $0.isDone }.count
+      }
+
     var body: some View {
         ZStack {
             Color.background.edgesIgnoringSafeArea(.all)
             ScrollView {
                 VStack(spacing: 6) {
                     VStack {
-                        Text("\(taskModel.countCompletedTasks())")
+                        Text("\(completedTaskCount)")
                         ZStack(alignment: .leading) {
                             HStack {
                           if taskModel.taskTitle.isEmpty && !isPressed {
@@ -74,7 +77,7 @@ struct TaskView: View {
                             .padding(.vertical, 12)
                         Spacer()
                     }
-                    if tasksItems.isEmpty {
+                    if tasksArray.isEmpty {
                         VStack {
                             Text("No Tasks for Today")
                                 .mediumFont_13()
@@ -86,7 +89,7 @@ struct TaskView: View {
                                 .frame(height: 93)
                         }.padding(.top, 80)
                     } else {
-                        ForEach(tasksItems) { taskItem in
+                        ForEach(tasksArray) { taskItem in
                             VStack {
                                 HStack {
                                     Text(taskItem.titleTask ?? "")
