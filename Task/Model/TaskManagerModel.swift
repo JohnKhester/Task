@@ -9,13 +9,6 @@ import Foundation
 import SwiftUI
 import CoreData
 
-struct Task: Identifiable {
-    let id = UUID()
-    var titleTask: String
-    var countDoneTask: Int16
-    var isDone: Bool = false
-}
-
 struct Achievement: Identifiable {
     let id = UUID()
     let title: String
@@ -42,20 +35,66 @@ class TaskManagerModel: ObservableObject, Identifiable {
     
     // MARK: New Task Properties
     @Published var taskTitle: String = ""
+    @Published var taskDeadline: Date = Date()
     @Published var isDone: Bool = false
-    
     @Published var completedTaskCount: Int = 0
-    @Published var targetCount: Int = 3 
-    @Published var savedTargetCount: Int = 3
+    
+    // MARK: New Target Properties
+    @Published var goalCount: Int16 = 0
+    @Published var savedTargetCount: Int = 0
+    
+    
+    // MARK: New initializer to load goal count from Core Data
+    init() {
+        let context = PersistenceController.shared.container.viewContext
+        loadGoalCount(context: context)
+    }
+    // MARK: Save Target Count To Core Data
+    func saveGoalCount(context: NSManagedObjectContext) {
+        if let targetData = fetchTargetData(context: context) {
+            targetData.targetCount = Int16(goalCount)
+        } else {
+            let newTargetData = TargetData(context: context)
+            newTargetData.targetCount = Int16(goalCount)
+        }
+
+        do {
+            try context.save()
+        } catch {
+            print("Error saving context: \(error.localizedDescription)")
+        }
+    }
+    // MARK: Load Saved Value Target Core Data
+    func loadGoalCount(context: NSManagedObjectContext) {
+        if let targetData = fetchTargetData(context: context) {
+            goalCount = Int16(targetData.targetCount)
+        } else {
+            goalCount = 0
+        }
+    }
+    // Получение объекта TargetData
+    private func fetchTargetData(context: NSManagedObjectContext) -> TargetData? {
+        let fetchRequest: NSFetchRequest<TargetData> = TargetData.fetchRequest()
+
+        do {
+            let results = try context.fetch(fetchRequest)
+            return results.first
+        } catch {
+            print("Error fetching target data: \(error.localizedDescription)")
+            return nil
+        }
+    }
     
     // MARK: Adding Task To Core Data
     func addTask(context: NSManagedObjectContext) -> Bool {
         var newTask: TaskData!
         newTask = TaskData(context: context)
         newTask.titleTask = taskTitle
+        newTask.deadline = taskDeadline
+        newTask.id = UUID()
         newTask.isDone = false
         try? context.save()
-        
+        context.refreshAllObjects()
         if let _ = try? context.save() {
             return true
         }
@@ -74,7 +113,6 @@ class TaskManagerModel: ObservableObject, Identifiable {
         task.isDone.toggle()
         try? context.save()
     }
-    
     
     
     @Published var achievements: [Achievement] = [
@@ -149,17 +187,17 @@ class TaskManagerModel: ObservableObject, Identifiable {
     ]
 
 
-    // Вычисление общего прогресса выполнения задач для всех дней
-    var overallProgress: Double {
-        let totalCompletedCount = taskProgress.values.reduce(0) { $0 + $1.completedCount }
-        let totalTaskCount = taskProgress.values.reduce(0) { $0 + $1.totalCount }
-        if totalTaskCount == 0 {
-            return 0.0
-        } else {
-            return Double(totalCompletedCount) / Double(totalTaskCount)
-        }
-    }
-    
+//    // Вычисление общего прогресса выполнения задач для всех дней
+//    var overallProgress: Double {
+//        let totalCompletedCount = taskProgress.values.reduce(0) { $0 + $1.completedCount }
+//        let totalTaskCount = taskProgress.values.reduce(0) { $0 + $1.totalCount }
+//        if totalTaskCount == 0 {
+//            return 0.0
+//        } else {
+//            return Double(totalCompletedCount) / Double(totalTaskCount)
+//        }
+//    }
+//    
 //    // функция обновляет прогресс выполнения задачи для указанного дня, основываясь на значении completedTasksCount.
 //    func updateTaskProgress(forDay day: String) {
 //        if let progress = taskProgress[day] {
@@ -168,7 +206,7 @@ class TaskManagerModel: ObservableObject, Identifiable {
 //            taskProgress[day] = updatedProgress
 //        }
 //    }
-//
+
     private var achievementTargets: [String: Int] = [
         "Default": 0,
         "Beginner": 1,
@@ -222,22 +260,11 @@ class TaskManagerModel: ObservableObject, Identifiable {
 //    }
 
     func increment() {
-        targetCount += 1
+        goalCount += 1
     }
     
     func decrement() {
-        targetCount -= 1
+        goalCount -= 1
     }
 
-//    var completionPercentage: Double {
-//        let completedCount = Double(completedTasksCount)
-//        let target = Double(targetCount)
-//        
-//        if target == 0 {
-//            return 0.0
-//        } else {
-//            return completedCount / target
-//        }
-//    }
-    
 }

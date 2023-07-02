@@ -9,6 +9,13 @@ import SwiftUI
 
 struct CounterTargetComponents: View {
     @EnvironmentObject private var taskManager: TaskManagerModel
+    
+    // MARK: All Environment Values in one Variable
+    @Environment(\.self) var env
+    
+    // MARK: Fetching Task
+    @FetchRequest(entity: TaskData.entity(), sortDescriptors: [], predicate: nil, animation: .easeInOut) var tasksArray: FetchedResults<TaskData>
+    
     @State private var isEditingTarget = false
     @State private var hasChangedTarget = false
     @Binding var isChangeTargetActive: Bool
@@ -17,17 +24,19 @@ struct CounterTargetComponents: View {
         VStack {
             HStack {
                 Button(action: {
-                    decrementTarget()
+                    if taskManager.goalCount > 0 {
+                        decrementTarget()
+                    }
                 }) {
                     Image(systemName: "minus")
                         .boldFont_16()
-                        .foregroundColor((taskManager.targetCount != 0) ? .black : .gray)
+                        .foregroundColor((taskManager.goalCount > 0) ? .black : .gray)
                 }
-                .buttonStyle(TargetButtonStyle(enabled: taskManager.targetCount != 0))
+                .buttonStyle(TargetButtonStyle(enabled: taskManager.goalCount > 0))
                 .padding(.trailing, 20)
 
                 VStack {
-                    Text("\(taskManager.targetCount)")
+                    Text("\(taskManager.goalCount)")
                         .boldFont_32()
                         .foregroundColor(.white)
                     Text("Your Goal")
@@ -48,43 +57,40 @@ struct CounterTargetComponents: View {
             .padding(.bottom, 20)
             .background(Color.background)
 
+            
             Button(action: {
                 toggleEditingTarget()
             }) {
                 Text("Change Goal")
-                    .foregroundColor(hasChangedTarget ? .black : .gray)
+                    .foregroundColor(hasChangedTarget || taskManager.goalCount == 0 ? .black : .gray)
             }
-            .buttonStyle(ChangeGoalButtonStyle(enabled: hasChangedTarget))
+            .buttonStyle(ChangeGoalButtonStyle(enabled: hasChangedTarget && taskManager.goalCount > 0))
             .frame(maxWidth: .infinity)
             .padding(14)
-            .disabled(!hasChangedTarget)
+            .disabled(!hasChangedTarget || taskManager.goalCount == 0)
         }
         .padding(16)
     }
 
     private func incrementTarget() {
-        taskManager.increment()
+        taskManager.goalCount += 1
         hasChangedTarget = true
     }
 
     private func decrementTarget() {
-        taskManager.decrement()
+        taskManager.goalCount -= 1
         hasChangedTarget = true
     }
 
     private func toggleEditingTarget() {
         isEditingTarget.toggle()
         if isEditingTarget {
-            taskManager.savedTargetCount = taskManager.targetCount
+            taskManager.savedTargetCount = Int(taskManager.goalCount)
+            if let context = tasksArray.first?.managedObjectContext {
+                taskManager.saveGoalCount(context: context)
+            }
         }
-        isChangeTargetActive = false
-    }
-}
-
-struct CounterTargetComponents_Previews: PreviewProvider {
-    static var previews: some View {
-        CounterTargetComponents(isChangeTargetActive: .constant(false))
-            .environmentObject(TaskManagerModel())
+        isChangeTargetActive = isEditingTarget
     }
 }
 
@@ -114,5 +120,12 @@ struct ChangeGoalButtonStyle: ButtonStyle {
                 RoundedRectangle(cornerRadius: 12, style: .continuous)
                     .fill(enabled ? Color.greenColor : Color.gray.opacity(0.2))
             }
+    }
+}
+
+struct CounterTargetComponents_Previews: PreviewProvider {
+    static var previews: some View {
+        CounterTargetComponents(isChangeTargetActive: .constant(false))
+            .environmentObject(TaskManagerModel())
     }
 }

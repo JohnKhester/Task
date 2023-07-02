@@ -23,6 +23,17 @@ struct WidgetComponentView: View {
           tasksArray.filter { $0.isDone }.count
       }
     
+    // MARK: Fetching Сompletion Percentage Task
+    var completionPercentage: Double {
+        let completedCount = Double(completedTaskCount)
+        let target = Double(taskManager.goalCount)
+        
+        if target == 0 {
+            return 0.0
+        } else {
+            return completedCount / target
+        }
+    }
     var body: some View {
         HStack {
             VStack(alignment: .leading) {
@@ -65,7 +76,7 @@ struct WidgetComponentView: View {
                                 .font(Font.system(size: 14))
                                 .foregroundColor(Color.white)
                         }
-                        Text("\(taskManager.savedTargetCount)")
+                        Text("\(taskManager.goalCount)")
                             .boldFont_18()
                             .foregroundColor(Color.white)
                             .padding(.top, -8)
@@ -77,13 +88,13 @@ struct WidgetComponentView: View {
                 Text(String(format: "%.0f%%", progress * 100))
                     .boldFont_16()
                     .foregroundColor(Color.white)
-                CircularCharView(progress: progress, startColor: .blueColor, endColor: .greenColor)
+                CircularCharView(progress:  CGFloat(completionPercentage), startColor: .blueColor, endColor: .greenColor)
                     .frame(width: 120, height: 120)
-                    .animation(.easeInOut(duration: 1), value: UUID())
+                    .animation(.easeInOut(duration: 3), value: UUID())
                     .onAppear {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                             withAnimation {
-                              // progress = taskManager.completedCount
+                                progress = CGFloat(completionPercentage)
                             }
                         }
                     }

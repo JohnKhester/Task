@@ -17,22 +17,18 @@ struct TaskView: View {
     @Environment(\.self) var env
     
     // MARK: Fetching Task
-    @FetchRequest(entity: TaskData.entity(), sortDescriptors: [], predicate: nil, animation: .easeInOut) var tasksArray: FetchedResults<TaskData>
+    @FetchRequest(entity: TaskData.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \TaskData.id, ascending: false)], predicate: nil, animation: .easeInOut) var tasksArray: FetchedResults<TaskData>
+
 
     @State private var isEditing = false
     @State private var isPressed = false
     
-    var completedTaskCount: Int {
-          tasksArray.filter { $0.isDone }.count
-      }
-
     var body: some View {
         ZStack {
             Color.background.edgesIgnoringSafeArea(.all)
             ScrollView {
                 VStack(spacing: 6) {
                     VStack {
-                        Text("\(completedTaskCount)")
                         ZStack(alignment: .leading) {
                             HStack {
                           if taskModel.taskTitle.isEmpty && !isPressed {
@@ -56,6 +52,8 @@ struct TaskView: View {
                         Button(action: {
                             if taskModel.addTask(context: env.managedObjectContext) {
                                 print("Задача успешно создана")
+                                taskModel.taskTitle = "" // Сброс значения taskModel.taskTitle
+                                isPressed = false // Сброс значения isPressed
                             }
                         }) {
                             Text("Done")
@@ -89,7 +87,7 @@ struct TaskView: View {
                                 .frame(height: 93)
                         }.padding(.top, 80)
                     } else {
-                        ForEach(tasksArray) { taskItem in
+                        ForEach(tasksArray, id: \.id) { taskItem in
                             VStack {
                                 HStack {
                                     Text(taskItem.titleTask ?? "")

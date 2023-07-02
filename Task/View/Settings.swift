@@ -6,9 +6,12 @@
 //
 
 import SwiftUI
+import UserNotifications
+
 
 struct Settings: View {
     @State private var isChangeTargetActive = false
+    @State private var isNotificationEnabled = false
     var body: some View {
         NavigationStack {
             List {
@@ -18,7 +21,15 @@ struct Settings: View {
                     Text("Change Task Goal")
                 })
                 
-                Text("Notifications")
+                Toggle("Notifications", isOn: $isNotificationEnabled)
+                    .onChange(of: isNotificationEnabled) { newValue in
+                        if newValue {
+                            requestNotificationPermission()
+                        } else {
+                            cancelNotifications()
+                        }
+                    }
+                
                 Text("Privacy")
                 Text("ADS ")
             }.sheet(isPresented: $isChangeTargetActive) {
@@ -57,6 +68,42 @@ struct Settings: View {
             .navigationBarTitleDisplayMode(.inline)
             
         }
+    }
+    
+    private func requestNotificationPermission() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+            if let error = error {
+                print("Ошибка разрешения уведомлений: \(error)")
+            } else if granted {
+                print("Уведомления разрешены")
+                scheduleNotification()
+            } else {
+                print("Уведомления не разрешены")
+            }
+        }
+    }
+    
+    private func scheduleNotification() {
+        let content = UNMutableNotificationContent()
+        content.title = "Осталось задачи"
+        content.body = "У вас осталось не выполненных задач"
+        content.sound = .default
+        
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 60, repeats: false)
+        
+        let request = UNNotificationRequest(identifier: "TaskReminder", content: content, trigger: trigger)
+        
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error = error {
+                print("Ошибка отправки уведомления: \(error)")
+            } else {
+                print("Уведомление успешно запланировано")
+            }
+        }
+    }
+    
+    private func cancelNotifications() {
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["TaskReminder"])
     }
 }
 

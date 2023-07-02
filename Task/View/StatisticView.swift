@@ -9,6 +9,7 @@ import SwiftUI
 
 struct StatisticView: View {
     @EnvironmentObject private var taskManager: TaskManagerModel
+    
     @State private var progress: CGFloat = 0.0
     var body: some View {
         GeometryReader { geometry in
