@@ -73,7 +73,6 @@ class TaskManagerModel: ObservableObject, Identifiable {
     // MARK: Getting Object Of TargetData
     private func fetchTargetData(context: NSManagedObjectContext) -> TargetData? {
         let fetchRequest: NSFetchRequest<TargetData> = TargetData.fetchRequest()
-
         do {
             let results = try context.fetch(fetchRequest)
             return results.first
@@ -193,6 +192,28 @@ class TaskManagerModel: ObservableObject, Identifiable {
             isLockedDescription: "Close 150 tasks and continue confidently towards your goals.",
             isUnLockedDecription: "You have closed 150 tasks. Your consistency and willpower serve as an example to other AchievoTasks users",
             isUnlocked: false),
+        
+        Achievement(
+            id: "Atom",
+            title: "Atom",
+            date: "3/08/2023",
+            image: "7",
+            colorImage: "colorful_7",
+            achivmentDescription: "250 Tasks",
+            isLockedDescription: "Close 250 tasks and continue confidently towards your goals.",
+            isUnLockedDecription: "You have closed 250 tasks. Your perseverance and dedication are admirable!",
+            isUnlocked: false),
+        
+        Achievement(
+            id: "Strawberry",
+            title: "Strawberry",
+            date: "3/08/2023",
+            image: "8",
+            colorImage: "colorful_8",
+            achivmentDescription: "300 Tasks",
+            isLockedDescription: "Close 250 tasks and continue confidently towards your goals.",
+            isUnLockedDecription: "You have closed 150 tasks. Your consistency and will power serve as an example to other AchievoTasks users",
+            isUnlocked: false),
     ]
 
     private var achievementTargets: [String: Int] = [
@@ -201,8 +222,9 @@ class TaskManagerModel: ObservableObject, Identifiable {
         "Scout": 3,
         "Seeker": 4,
         "Dweller": 5,
-        "Jedi": 7,
-        "Jedi2": 8
+        "Jedi": 6,
+        "Atom": 7,
+        "Strawberry": 8
     ]
     
     
