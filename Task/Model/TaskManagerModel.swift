@@ -10,7 +10,7 @@ import SwiftUI
 import CoreData
 
 struct Achievement: Identifiable {
-    let id = UUID()
+    var id: String
     let title: String
     let date: String
     var image: String
@@ -24,7 +24,7 @@ struct Achievement: Identifiable {
  
 class TaskManagerModel: ObservableObject, Identifiable {
     
-    @FetchRequest(entity: TaskData.entity(), sortDescriptors: [], predicate: nil, animation: .easeInOut) var tasksArray: FetchedResults<TaskData>
+    @FetchRequest(entity: TaskData.entity(), sortDescriptors: [], animation: .easeInOut) var tasksArray: FetchedResults<TaskData>
     
     // MARK: New Task Properties
     @Published var taskTitle: String = ""
@@ -123,6 +123,7 @@ class TaskManagerModel: ObservableObject, Identifiable {
     // MARK: Achievement List
     @Published var achievements: [Achievement] = [
         Achievement(
+            id: "beginner",
             title: "Beginner",
             date: "1/08/2023",
             image: "1",
@@ -133,6 +134,7 @@ class TaskManagerModel: ObservableObject, Identifiable {
             isUnlocked: false),
                     
         Achievement(
+            id: "active",
             title: "Active",
             date: "2/08/2023",
             image: "2",
@@ -143,6 +145,7 @@ class TaskManagerModel: ObservableObject, Identifiable {
             isUnlocked: false),
         
         Achievement(
+            id: "scout",
             title: "Scout",
             date: "3/08/2023",
             image: "3",
@@ -153,6 +156,7 @@ class TaskManagerModel: ObservableObject, Identifiable {
             isUnlocked: false),
         
         Achievement(
+            id: "seeker",
             title: "Seeker",
             date: "3/08/2023",
             image: "4",
@@ -163,6 +167,7 @@ class TaskManagerModel: ObservableObject, Identifiable {
             isUnlocked: false),
         
         Achievement(
+            id: "dweller",
             title: "Dweller",
             date: "3/08/2023",
             image: "5",
@@ -173,6 +178,7 @@ class TaskManagerModel: ObservableObject, Identifiable {
             isUnlocked: false),
         
         Achievement(
+            id: "jedi",
             title: "Jedi",
             date: "3/08/2023",
             image: "6",
@@ -221,7 +227,7 @@ class TaskManagerModel: ObservableObject, Identifiable {
     }
 
     // MARK: Save Achievement Status to CoreData
-    func saveAchievementStatusToCoreData(achievementID: UUID, isUnlocked: Bool, context: NSManagedObjectContext) {
+    func saveAchievementStatusToCoreData(achievementID: String, isUnlocked: Bool, context: NSManagedObjectContext) {
         let fetchRequest: NSFetchRequest<AchievementData> = AchievementData.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "id == %@", achievementID as CVarArg)
         
@@ -248,7 +254,7 @@ class TaskManagerModel: ObservableObject, Identifiable {
         
         do {
             let results = try context.fetch(fetchRequest)
-            
+
             for achievementData in results {
                 if let achievementIndex = achievements.firstIndex(where: { $0.id == achievementData.id }) {
                     achievements[achievementIndex].isUnlocked = achievementData.isUnlocked

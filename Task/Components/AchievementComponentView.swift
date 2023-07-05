@@ -43,6 +43,7 @@ struct AchievementComponentView: View {
 struct AchievementComponentView_Previews: PreviewProvider {
     static var previews: some View {
         let achievement = Achievement(
+            id: "beginner",
             title: "Beginner",
             date: "1/08/2023",
             image: "1",
