@@ -2,7 +2,7 @@
 //  TaskData+CoreDataProperties.swift
 //  Task
 //
-//  Created by Andrey on 02.07.2023.
+//  Created by Andrey on 06.07.2023.
 //
 //
 
@@ -17,10 +17,10 @@ extension TaskData {
     }
 
     @NSManaged public var completedTaskCount: Int16
-    @NSManaged public var isDone: Bool
-    @NSManaged public var titleTask: String?
     @NSManaged public var deadline: Date?
     @NSManaged public var id: UUID?
+    @NSManaged public var isDone: Bool
+    @NSManaged public var titleTask: String?
 
 }
 

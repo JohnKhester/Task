@@ -26,6 +26,7 @@
 		171ECA9C2A41E00D00EF3EFE /* CounterTargetComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171ECA9B2A41E00D00EF3EFE /* CounterTargetComponents.swift */; };
 		171ECA9E2A41E8CB00EF3EFE /* CircularCharView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171ECA9D2A41E8CB00EF3EFE /* CircularCharView.swift */; };
 		171ECAA02A41EB5000EF3EFE /* WidgetComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171ECA9F2A41EB5000EF3EFE /* WidgetComponentView.swift */; };
+		178CE37D2A5614A700ED72A3 /* PrivacyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 178CE37C2A5614A700ED72A3 /* PrivacyView.swift */; };
 		17EF44322A44B6F200104354 /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17EF44312A44B6F200104354 /* BlurView.swift */; };
 		17EF44342A44BC0000104354 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17EF44332A44BC0000104354 /* Constants.swift */; };
 		17EF44362A44ECE400104354 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17EF44352A44ECE400104354 /* ColorExtension.swift */; };
@@ -53,6 +54,8 @@
 		171ECA9B2A41E00D00EF3EFE /* CounterTargetComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CounterTargetComponents.swift; sourceTree = "<group>"; };
 		171ECA9D2A41E8CB00EF3EFE /* CircularCharView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularCharView.swift; sourceTree = "<group>"; };
 		171ECA9F2A41EB5000EF3EFE /* WidgetComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetComponentView.swift; sourceTree = "<group>"; };
+		1758BF422A5620AD00733D89 /* DataModel 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "DataModel 2.xcdatamodel"; sourceTree = "<group>"; };
+		178CE37C2A5614A700ED72A3 /* PrivacyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyView.swift; sourceTree = "<group>"; };
 		17EF44312A44B6F200104354 /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
 		17EF44332A44BC0000104354 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		17EF44352A44ECE400104354 /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
@@ -128,6 +131,7 @@
 				170AC2B32A42F52F00DBB340 /* Settings.swift */,
 				170AC2B92A43035B00DBB340 /* TaskView.swift */,
 				170AC2BF2A43718E00DBB340 /* AchievementView.swift */,
+				178CE37C2A5614A700ED72A3 /* PrivacyView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -257,6 +261,7 @@
 				170AC2B22A42EFC700DBB340 /* Activity.swift in Sources */,
 				17EF44342A44BC0000104354 /* Constants.swift in Sources */,
 				171ECAA02A41EB5000EF3EFE /* WidgetComponentView.swift in Sources */,
+				178CE37D2A5614A700ED72A3 /* PrivacyView.swift in Sources */,
 				171ECA9C2A41E00D00EF3EFE /* CounterTargetComponents.swift in Sources */,
 				17EF44392A44F48300104354 /* DemoView.swift in Sources */,
 				17EF44322A44B6F200104354 /* BlurView.swift in Sources */,
@@ -466,6 +471,7 @@
 		1701D49F2A4E35D300131D3B /* DataModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				1758BF422A5620AD00733D89 /* DataModel 2.xcdatamodel */,
 				1701D4A02A4E35D300131D3B /* DataModel.xcdatamodel */,
 			);
 			currentVersion = 1701D4A02A4E35D300131D3B /* DataModel.xcdatamodel */;

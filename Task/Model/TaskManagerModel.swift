@@ -113,10 +113,16 @@ class TaskManagerModel: ObservableObject, Identifiable {
         
         if task.isDone {
             completedTaskCount += 1
-            var achievement = achievements[completedTaskCount - 1]
-            achievement.isUnlocked = true
-            saveAchievementStatus(achievement: achievement, context: context)
+            if completedTaskCount <= achievements.count {
+                var achievement = achievements[completedTaskCount - 1]
+                achievement.isUnlocked = true
+                saveAchievementStatus(achievement: achievement, context: context)
+            } else {
+                // Обработка случая, когда индекс выходит за пределы допустимого диапазона массива achievements
+                // Можно выбрать подходящую логику в зависимости от требований вашего приложения
+            }
         }
+
     }
 
 
@@ -190,13 +196,13 @@ class TaskManagerModel: ObservableObject, Identifiable {
     ]
 
     private var achievementTargets: [String: Int] = [
-        "Default": 0,
         "Beginner": 1,
         "Active": 2,
         "Scout": 3,
         "Seeker": 4,
         "Dweller": 5,
-        "Jedi": 7
+        "Jedi": 7,
+        "Jedi2": 8
     ]
     
     

@@ -30,8 +30,9 @@ struct Settings: View {
                         }
                     }
                 
-                Text("Privacy")
-                Text("ADS ")
+               NavigationLink(destination: PrivacyView(), label: {
+                   Text("Privacy")
+               })
             }.sheet(isPresented: $isChangeTargetActive) {
                 ZStack {
                     Color.background.ignoresSafeArea(.all)
