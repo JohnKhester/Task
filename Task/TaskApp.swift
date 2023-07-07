@@ -10,18 +10,28 @@ import UserNotifications
 
 @main
 struct TaskApp: App {
+    @State private var showSplashScreen = true
     @StateObject private var taskManager = TaskManagerModel()
     let persistenceController = PersistenceController.shared
     
     var body: some Scene {
         WindowGroup {
-            Activity()
-                .preferredColorScheme(.dark)
-                .environmentObject(taskManager)
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
-                .onAppear {
-                    requestNotificationPermission()
-                }
+            if showSplashScreen {
+                SplashScreen()
+                    .onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                            showSplashScreen = false
+                        }
+                    }                
+            } else {
+                Activity()
+                    .preferredColorScheme(.dark)
+                    .environmentObject(taskManager)
+                    .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                    .onAppear {
+                        requestNotificationPermission()
+                    }
+            }
         }
     }
     
