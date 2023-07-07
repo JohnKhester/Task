@@ -11,6 +11,7 @@ import UserNotifications
 @main
 struct TaskApp: App {
     @State private var showSplashScreen = true
+    @AppStorage("isButtonScreenShown") private var isButtonScreenShown = false
     @StateObject private var taskManager = TaskManagerModel()
     let persistenceController = PersistenceController.shared
     
@@ -22,8 +23,12 @@ struct TaskApp: App {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                             showSplashScreen = false
                         }
-                    }                
-            } else {
+                    }
+            } else if !isButtonScreenShown {
+                OnBoardingView(onButtonTapped: {
+                    isButtonScreenShown = true
+                })
+            }  else {
                 Activity()
                     .preferredColorScheme(.dark)
                     .environmentObject(taskManager)
