@@ -20,8 +20,8 @@ struct WidgetComponentView: View {
 
     // MARK: Fetching Task Done
     var completedTaskCount: Int {
-          tasksArray.filter { $0.isDone }.count
-      }
+        tasksArray.filter { $0.isDone }.count
+    }
     
     // MARK: Fetching Сompletion Percentage Task
     var completionPercentage: Double {
@@ -46,7 +46,7 @@ struct WidgetComponentView: View {
                             .font(Font.system(size: 14))
                             .foregroundColor(Color.white)
                     }
-                    Text("\(taskManager.completedTaskCount)")
+                    Text("\(completedTaskCount)")
                         .boldFont_32()
                         .foregroundColor(Color.white)
                         .padding(.top, -8)
