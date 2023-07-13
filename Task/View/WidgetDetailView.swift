@@ -20,10 +20,8 @@ struct WidgetDetailView: View {
     @FetchRequest(entity: TaskData.entity(), sortDescriptors: [], predicate: nil, animation: .easeInOut) var tasksArray: FetchedResults<TaskData>
     
     var twoColumnGrid = [GridItem(.flexible(), spacing: 16), GridItem(.flexible(), spacing: 6)]
-    
-    var completedTaskCount: Int {
-          tasksArray.filter { $0.isDone }.count
-      }
+
+    var completedTaskCount: Int { tasksArray.filter { $0.isDone }.count }
     
     var body: some View {
         NavigationStack {
@@ -42,7 +40,8 @@ struct WidgetDetailView: View {
                     }
                 }.padding([.leading, .trailing], 16)
             }
-        }.navigationTitle("Activity")
+        }
+            .navigationTitle("Activity")
     }
 }
 

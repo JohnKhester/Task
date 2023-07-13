@@ -24,12 +24,14 @@ struct Achievement: Identifiable {
  
 class TaskManagerModel: ObservableObject, Identifiable {
     
-    @FetchRequest(entity: TaskData.entity(), sortDescriptors: [], animation: .easeInOut) var tasksArray: FetchedResults<TaskData>
+    @FetchRequest(entity: TaskData.entity(), sortDescriptors: [], animation: .easeInOut)
+    var tasksArray: FetchedResults<TaskData>
     
     // MARK: New Task Properties
     @Published var taskTitle: String = ""
     @Published var taskDeadline: Date = Date()
     @Published var isDone: Bool = false
+    @Published var doneAt: Date?
     @Published var completedTaskCount: Int = 0
     
     // MARK: New Target Properties
@@ -108,6 +110,7 @@ class TaskManagerModel: ObservableObject, Identifiable {
     // MARK: Completed Task To Core Data
     func toggleTaskDone(task: TaskData, context: NSManagedObjectContext) {
         task.isDone.toggle()
+        task.doneAt = Date()
         try? context.save()
         
         if task.isDone {
@@ -116,9 +119,6 @@ class TaskManagerModel: ObservableObject, Identifiable {
                 var achievement = achievements[completedTaskCount - 1]
                 achievement.isUnlocked = true
                 saveAchievementStatus(achievement: achievement, context: context)
-            } else {
-                // Обработка случая, когда индекс выходит за пределы допустимого диапазона массива achievements
-                // Можно выбрать подходящую логику в зависимости от требований вашего приложения
             }
         }
 
