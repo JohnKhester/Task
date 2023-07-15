@@ -5,10 +5,12 @@
         <attribute name="isUnlocked" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
     </entity>
     <entity name="TargetData" representedClassName="TargetData" syncable="YES" codeGenerationType="class">
+        <attribute name="goalPopupShownAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="targetCount" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
     </entity>
     <entity name="TaskData" representedClassName="TaskData" syncable="YES" codeGenerationType="class">
         <attribute name="completedTaskCount" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="deadline" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="doneAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>

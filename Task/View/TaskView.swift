@@ -17,7 +17,7 @@ struct TaskView: View {
     @Environment(\.self) var env
     
     // MARK: Fetching Task
-    @FetchRequest(entity: TaskData.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \TaskData.id, ascending: false)], predicate: nil, animation: .easeInOut) var tasksArray: FetchedResults<TaskData>
+    @FetchRequest(entity: TaskData.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \TaskData.createdAt, ascending: false)], predicate: nil, animation: .easeInOut) var tasksArray: FetchedResults<TaskData>
 
 
     @State private var isEditing = false

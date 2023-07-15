@@ -87,7 +87,7 @@ struct CounterTargetComponents: View {
         if isEditingTarget {
             taskManager.savedTargetCount = Int(taskManager.goalCount)
             if let context = tasksArray.first?.managedObjectContext {
-                taskManager.saveGoalCount(context: context)
+                taskManager.saveGoalData(context: context)
             }
         }
         isChangeTargetActive = isEditingTarget

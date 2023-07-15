@@ -28,6 +28,7 @@ class TaskManagerModel: ObservableObject, Identifiable {
     var tasksArray: FetchedResults<TaskData>
     
     // MARK: New Task Properties
+    @Published var createdAt: Date = Date()
     @Published var taskTitle: String = ""
     @Published var taskDeadline: Date = Date()
     @Published var isDone: Bool = false
@@ -37,23 +38,26 @@ class TaskManagerModel: ObservableObject, Identifiable {
     // MARK: New Target Properties
     @Published var goalCount: Int16 = 0
     @Published var savedTargetCount: Int = 0
+    @Published var goalPopupShownAt: Date?
     
     
     // MARK: New initializer to load goal count from Core Data
     init() {
         let context = PersistenceController.shared.container.viewContext
-        loadGoalCount(context: context)
+        loadGoalData(context: context)
         loadAchievementStatus(context: context) // Load achievement status from Core Data
     }
 
     
-    // MARK: Save Target Count To Core Data
-    func saveGoalCount(context: NSManagedObjectContext) {
+    // MARK: Save Target Data To Core Data
+    func saveGoalData(context: NSManagedObjectContext) {
         if let targetData = fetchTargetData(context: context) {
             targetData.targetCount = Int16(goalCount)
+            targetData.goalPopupShownAt = goalPopupShownAt
         } else {
             let newTargetData = TargetData(context: context)
             newTargetData.targetCount = Int16(goalCount)
+            newTargetData.goalPopupShownAt = Date()
         }
 
         do {
@@ -64,11 +68,13 @@ class TaskManagerModel: ObservableObject, Identifiable {
     }
     
     // MARK: Load Saved Value Target Core Data
-    func loadGoalCount(context: NSManagedObjectContext) {
+    func loadGoalData(context: NSManagedObjectContext) {
         if let targetData = fetchTargetData(context: context) {
             goalCount = Int16(targetData.targetCount)
+            goalPopupShownAt = targetData.goalPopupShownAt
         } else {
             goalCount = 0
+            goalPopupShownAt = Date()
         }
     }
 
@@ -92,6 +98,7 @@ class TaskManagerModel: ObservableObject, Identifiable {
         newTask.deadline = taskDeadline
         newTask.id = UUID()
         newTask.isDone = false
+        newTask.createdAt = Date()
         context.refreshAllObjects()
         
         if let _ = try? context.save() {

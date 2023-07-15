@@ -20,7 +20,6 @@ struct WidgetComponentView: View {
 
     // MARK: Fetching Task Done
     var completedTaskCount: Int { tasksArray.filter { $0.isDone }.count }
-    var yesterdayCompletedTasksCount: Int { tasksArray.filter { $0.isDone && Calendar.current.isDateInYesterday($0.doneAt ?? Date()) }.count }
     
     // MARK: Fetching Сompletion Percentage Task
     var completionPercentage: Double {
@@ -107,10 +106,6 @@ struct WidgetComponentView: View {
             RoundedRectangle(cornerRadius: .cornerRadius, style: .continuous)
                 .fill(Color.darkColor)
         )
-        .onAppear() {
-            print(completedTaskCount)
-            print(yesterdayCompletedTasksCount)
-        }
     }
 }
 

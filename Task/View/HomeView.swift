@@ -15,6 +15,19 @@ struct HomeView: View {
     @State private var selectedAchievement: Achievement?
     @State private var isAnimating = false
     
+    // MARK: Fetching Task
+    @FetchRequest(entity: TaskData.entity(), sortDescriptors: [], predicate: nil, animation: .easeInOut) var tasksArray: FetchedResults<TaskData>
+    
+    // MARK: yesterday goals data
+    var yesterdayCreatedTasksCount: Int { tasksArray.filter { Calendar.current.isDateInYesterday($0.createdAt ?? Date()) }.count }
+    var yesterdayCompletedTasksCount: Int { tasksArray.filter { $0.isDone && Calendar.current.isDateInYesterday($0.doneAt ?? Date()) }.count }
+    private var shouldShowGoalsPopup: Binding<Bool> {
+        Binding(
+            get: { taskManager.goalPopupShownAt != nil && !Calendar.current.isDateInToday(taskManager.goalPopupShownAt!) },
+            set: { print($0) }
+        )
+    }
+    
     var threeColumnGrid = [GridItem(.flexible(), spacing: 6), GridItem(.flexible(), spacing: 6), GridItem(.flexible(), spacing: 6)]
     
     var body: some View {
@@ -99,8 +112,61 @@ struct HomeView: View {
             popupView
                 .opacity(isPopupVisible ? 1 : 0)
                 .animation(Animation.easeInOut(duration: 0.3), value: UUID())
+                .zIndex(2)
+        )
+        .overlay(
+            goalPopupView
+                .opacity(shouldShowGoalsPopup.wrappedValue ? 1 : 0) // change here to `(1)` to always show popup
+                .animation(Animation.easeInOut(duration: 0.3), value: UUID())
                 .zIndex(1)
         )
+    }
+    
+    @ViewBuilder
+    private var goalPopupView: some View {
+        GeometryReader { geometry in
+            Color.black.opacity(0.7)
+                .edgesIgnoringSafeArea(.all)
+                .onTapGesture {
+                    withAnimation {
+                        taskManager.goalPopupShownAt = Date()
+                        // WTF is context?
+                        if let context = tasksArray.first?.managedObjectContext {
+                            taskManager.saveGoalData(context: context)
+                        }
+                    }
+                }
+            
+            VStack {
+                Text("Hi! Your yesterday statistics: \(yesterdayCompletedTasksCount) / \(yesterdayCreatedTasksCount)")
+                    .boldFont_32()
+                    .foregroundColor(Color.white)
+                    .padding(.vertical, 4)
+            }
+            .background(
+                ZStack {
+                    LinearGradient(
+                        gradient: Gradient(colors: [Color(#colorLiteral(red: 0.7411764706, green: 0.09019607843, blue: 0.5058823529, alpha: 1)), Color(#colorLiteral(red: 0.8588235294, green: 0.09019607843, blue: 0.1490196078, alpha: 1))]),
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                    
+                    ForEach(0..<Int.random(in: 1...22), id: \.self) { index in
+                        Circle()
+                            .foregroundColor(.white)
+                            .opacity(Double.random(in: 0.1...0.5))
+                            .frame(width: CGFloat.random(in: 2...6), height: CGFloat.random(in: 4...12))
+                            .offset(x: CGFloat.random(in: -250...250), y: CGFloat.random(in: -200...200))
+                            .animation(Animation.easeInOut(duration: Double.random(in: 3...8)).repeatForever(autoreverses: true).delay(Double(index) * 0.8), value: UUID())
+                    }
+                }
+            )
+            .cornerRadius(36)
+            .padding([.leading, .trailing], 16)
+            .frame(maxWidth: .infinity)
+            .frame(height: 356)
+            .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
+        }
     }
     
     @ViewBuilder
